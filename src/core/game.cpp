@@ -2,6 +2,7 @@
 #include "world.h"
 #include "player/controller.h"
 #include "ui/hud.h"
+#include "weapons/weapon_registry.h"
 #include <cstdio>
 #include <chrono>
 #include <thread>
@@ -90,6 +91,21 @@ void Game::draw_hud() const {
     m_hud->draw_shield(50.0f);
     m_hud->draw_ammo(24, 96);
     m_hud->render();
+}
+
+void Game::apply_loadout() {
+    std::printf("[Game] Applying loadout: main=%u secondary=%u space=%u\n",
+        m_equipped_main, m_equipped_secondary, m_equipped_space);
+    // TODO: spawn pickup entities for each slot
+}
+
+void Game::cycle_weapon(int direction) {
+    uint32_t slots[3] = { m_equipped_main, m_equipped_secondary, m_equipped_space };
+    m_active_slot = (uint32_t)(((int)m_active_slot + direction + 3) % 3);
+    const char* slot_name = m_active_slot == 0 ? "Main" : m_active_slot == 1 ? "Secondary" : "Space";
+    const uint32_t id = slots[m_active_slot];
+    const auto* spec = get_weapon_spec((RealWeaponID)id);
+    std::printf("[Game] Switched to %s: %s\n", slot_name, spec ? spec->display_name : "(unknown)");
 }
 
 } // namespace tehi

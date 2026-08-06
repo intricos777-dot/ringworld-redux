@@ -31,11 +31,14 @@ private:
     uint32_t m_equipped_main = 3;      // M4A1_CARBINE
     uint32_t m_equipped_secondary = 1;  // M17_9MM
     uint32_t m_equipped_space = 12;     // PLASMA_RIFLE
+    uint32_t m_active_slot = 0;         // 0=Main, 1=Secondary, 2=Space
 
     void update_input(float dt);
     void update_campaign(float dt);
     void render_frame() const;
     void draw_hud() const;
+    void apply_loadout();
+    void cycle_weapon(int direction);
 };
 
 } // namespace tehi
