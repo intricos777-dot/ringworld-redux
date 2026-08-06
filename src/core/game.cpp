@@ -8,6 +8,8 @@
 #include "weapons/inventory.h"
 #include "core/game_mode.h"
 #include "core/easter_eggs.h"
+#include "renderer/render_bridge.h"
+#include "audio/audio_script.h"
 #include <cstdio>
 #include <chrono>
 #include <thread>
@@ -28,6 +30,10 @@ bool Game::initialize() {
     m_hud->initialize();
     m_menu = std::make_unique<MainMenu>();
     m_menu->initialize();
+    m_renderer = std::make_unique<RenderBridge>();
+    m_renderer->initialize(nullptr);
+    m_audio_script = std::make_unique<AudioScript>();
+    m_audio_script->load("maps/awakening.json");
     spawn_initial_entities();
     m_controller->set_controller_type(ControllerType::XboxOne);
     std::printf("[Game] Main menu — controller: Xbox One | Fire / Enter to start\n");
@@ -98,7 +104,14 @@ void Game::update_campaign(float dt) {
 }
 
 void Game::render_frame() const {
-    draw_hud();
+    if (m_renderer) {
+        m_renderer->begin_frame();
+        draw_hud();
+        m_renderer->end_frame();
+        m_renderer->present();
+    } else {
+        draw_hud();
+    }
 }
 
 void Game::draw_hud() const {

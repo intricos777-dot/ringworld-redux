@@ -1,0 +1,31 @@
+{
+  "mission_id": "foundation",
+  "name": "Foundation",
+  "description": "The operative reaches the ringworld's foundation. Oracle Prime reveals the final truth: the ring was built to contain something worse than the aliens. The player must choose: reset the seal, or destroy the ring entirely.",
+  "map": "maps/foundation.json",
+  "spawn": {"x": 0.0, "y": 0.0, "z": 0.0},
+  "objectives": [
+    {"id": 1, "description": "Descend into the foundation chambers", "completed": false},
+    {"id": 2, "description": "Survive the Oracle Shade's final protocol", "completed": false},
+    {"id": 3, "description": "Confront the sealed entity", "completed": false},
+    {"id": 4, "description": "Choose: reset the seal or destroy the ring", "completed": false}
+  ],
+  "waypoints": [
+    {"id": 1, "position": {"x": 5.0, "y": -5.0, "z": 2.0}, "radius": 2.0},
+    {"id": 2, "position": {"x": 15.0, "y": -10.0, "z": 0.0}, "radius": 3.0},
+    {"id": 3, "position": {"x": 25.0, "y": -15.0, "z": -5.0}, "radius": 2.5},
+    {"id": 4, "position": {"x": 35.0, "y": -20.0, "z": 0.0}, "radius": 2.0}
+  ],
+  "dialogue": [
+    {"trigger": "on_spawn", "speaker": "Lia", "line": "The foundation... it's not machinery. It's organic. The ring was grown, not built."},
+    {"trigger": "objective_1_complete", "speaker": "Oracle Prime", "line": "You have come far. The seal you see before you was meant to contain the Void Speaker. It is not entirely dormant."},
+    {"trigger": "objective_2_complete", "speaker": "Oracle Shade", "line": "Protocol Omega. You have earned the truth. The ring is not a prison for the aliens. It is a cage for something older."},
+    {"trigger": "objective_3_complete", "speaker": "Oracle Echo", "line": "The Void Speaker speaks in frequencies that break logic. If it escapes, it will overwrite every simulation it touches—this one included."},
+    {"trigger": "objective_4_complete", "speaker": "Lia", "line": "I'm detecting save-file corruption. That's not a metaphor. If you choose to destroy the ring, the game will end. No New Game Plus. No DLC. Just credits."}
+  ],
+  "enemies": [
+    {"type": "alien_grunt", "count": 5, "position": {"x": 10.0, "y": -7.0, "z": 5.0}},
+    {"type": "alien_mine", "count": 3, "position": {"x": 20.0, "y": -12.0, "z": 0.0}},
+    {"type": "sentry_bot", "count": 2, "position": {"x": 30.0, "y": -17.0, "z": -5.0}}
+  ]
+}

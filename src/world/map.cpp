@@ -109,6 +109,34 @@ bool MapData::load(const std::string& path) {
         dial += 1;
     }
 
+    // Parse hidden legend spawns
+    const char* hs = buf;
+    while ((hs = strstr(hs, "\"hidden_spawns\"")) != nullptr) {
+        const char* arr = strstr(hs, "[");
+        if (!arr) break;
+        const char* end = strchr(arr, ']');
+        if (!end) break;
+        std::string block(arr, end - arr);
+        unsigned int hid = 0, htype = 0, hcount = 0;
+        float hx = 0.0f, hy = 0.0f, hz = 0.0f;
+        if (sscanf(block.c_str(), "{\"id\" : %u", &hid) == 1 &&
+            sscanf(block.c_str(), "\"x\" : %f", &hx) == 1 &&
+            sscanf(block.c_str(), "\"y\" : %f", &hy) == 1 &&
+            sscanf(block.c_str(), "\"z\" : %f", &hz) == 1 &&
+            sscanf(block.c_str(), "\"enemy_type\" : %u", &htype) == 1 &&
+            sscanf(block.c_str(), "\"count\" : %u", &hcount) == 1) {
+            HiddenSpawn hsentry;
+            hsentry.id = hid;
+            hsentry.position[0] = hx;
+            hsentry.position[1] = hy;
+            hsentry.position[2] = hz;
+            hsentry.enemy_type = htype;
+            hsentry.count = hcount;
+            m_hidden_spawns.push_back(hsentry);
+        }
+        hs = end + 1;
+    }
+
     free(buf);
     std::printf("[Map] Parsed %zu waypoints, %zu objectives, %zu dialogue lines\n",
         m_waypoints.size(), m_objectives.size(), m_dialogue.size());

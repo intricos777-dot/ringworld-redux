@@ -13,6 +13,9 @@ add_library(tehi-core STATIC
     src/core/game_state.cpp
     src/core/game_mode.cpp
     src/core/easter_eggs.cpp
+    src/core/achievements.cpp
+    src/renderer/render_bridge.cpp
+    src/audio/audio_script.cpp
 )
 target_link_libraries(tehi-core PUBLIC te-engine te-renderer te-asset tehi-player tehi-ui)
 target_include_directories(tehi-core PUBLIC include src)
@@ -67,9 +70,17 @@ add_library(tehi-audio STATIC
     src/audio/music.cpp
     src/audio/transition.cpp
     src/audio/voice.cpp
+    src/audio/audio_script.cpp
 )
 target_include_directories(tehi-audio PUBLIC src)
 target_link_libraries(tehi-audio PRIVATE tehi-core)
+
+# Renderer bridge to twilight-elysium backend
+add_library(tehi-renderer STATIC
+    src/renderer/render_bridge.cpp
+)
+target_include_directories(tehi-renderer PUBLIC src)
+target_link_libraries(tehi-renderer PRIVATE tehi-core te-renderer)
 
 # World/maps
 add_library(tehi-world STATIC
@@ -89,5 +100,5 @@ target_link_libraries(tehi-ui PRIVATE tehi-core)
 enable_testing()
 add_executable(ringworld-redux-test src/core/main.cpp)
 target_include_directories(ringworld-redux-test PRIVATE src)
-target_link_libraries(ringworld-redux-test PRIVATE te-engine tehi-campaign tehi-ui tehi-audio tehi-weapons tehi-world tehi-player)
+target_link_libraries(ringworld-redux-test PRIVATE te-engine tehi-campaign tehi-ui tehi-audio tehi-weapons tehi-world tehi-player tehi-renderer)
 add_test(NAME ringworld-redux-core COMMAND ringworld-redux-test)

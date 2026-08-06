@@ -1,0 +1,35 @@
+{
+  "mission_id": "tower_of_babel",
+  "name": "Tower of Babel",
+  "description": "The squad reaches the alien command spire. Oracle Echo makes contact, revealing the alien chain of command. Xal'Thun awaits at the apex.",
+  "map": "maps/tower_of_babel.json",
+  "spawn": {"x": 0.0, "y": 0.0, "z": 0.0},
+  "objectives": [
+    {"id": 1, "description": "Ascend the tower through the lower decks", "completed": false},
+    {"id": 2, "description": "Disable the alien security grid", "completed": false},
+    {"id": 3, "description": "Confront Oracle Echo", "completed": false},
+    {"id": 4, "description": "Reach the command spire apex", "completed": false},
+    {"id": 5, "description": "Defeat Xal'Thun", "completed": false}
+  ],
+  "waypoints": [
+    {"id": 1, "position": {"x": 5.0, "y": 0.0, "z": 2.0}, "radius": 2.0},
+    {"id": 2, "position": {"x": 15.0, "y": 5.0, "z": 0.0}, "radius": 3.0},
+    {"id": 3, "position": {"x": 25.0, "y": 10.0, "z": -5.0}, "radius": 2.5},
+    {"id": 4, "position": {"x": 35.0, "y": 15.0, "z": 0.0}, "radius": 2.0},
+    {"id": 5, "position": {"x": 45.0, "y": 20.0, "z": 5.0}, "radius": 3.0}
+  ],
+  "dialogue": [
+    {"trigger": "on_spawn", "speaker": "Lia", "line": "The tower's energy signature is unlike anything I've scanned. It's almost... alive."},
+    {"trigger": "objective_1_complete", "speaker": "Spectre", "line": "Lower decks clear. Moving to security grid."},
+    {"trigger": "objective_2_complete", "speaker": "Oracle Echo", "line": "You have disabled my guards. Interesting. The ring's protocols are... flexible."},
+    {"trigger": "objective_3_complete", "speaker": "Oracle Echo", "line": "The aliens call this spire 'Babel'. They built it to speak to the ring's core. It is also their weakness."},
+    {"trigger": "objective_4_complete", "speaker": "Oracle Shade", "line": "You climb higher. The protocols grow harsher. I've already adjusted the spawn rates. You're welcome."},
+    {"trigger": "objective_5_complete", "speaker": "Oracle Prime", "line": "Xal'Thun is defeated. But the ring's seal is broken. You must reach the foundation before the cycle completes."}
+  ],
+  "enemies": [
+    {"type": "alien_grunt", "count": 4, "position": {"x": 10.0, "y": 2.0, "z": 5.0}},
+    {"type": "seeker_bot", "count": 3, "position": {"x": 20.0, "y": 7.0, "z": 0.0}},
+    {"type": "sentry_bot", "count": 2, "position": {"x": 30.0, "y": 12.0, "z": -5.0}},
+    {"type": "alien_commander", "count": 1, "position": {"x": 45.0, "y": 20.0, "z": 5.0}}
+  ]
+}

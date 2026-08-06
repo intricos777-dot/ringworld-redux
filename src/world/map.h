@@ -29,6 +29,13 @@ struct DialogueLine {
     std::string line;
 };
 
+struct HiddenSpawn {
+    uint32_t id = 0;
+    float position[3];
+    uint32_t enemy_type = 0;
+    uint32_t count = 1;
+};
+
 class MapData {
 public:
     bool load(const std::string& path);
@@ -36,6 +43,7 @@ public:
     const std::vector<Waypoint>& get_waypoints() const { return m_waypoints; }
     const std::vector<Objective>& get_objectives() const { return m_objectives; }
     const std::vector<DialogueLine>& get_dialogue() const { return m_dialogue; }
+    const std::vector<HiddenSpawn>& get_hidden_spawns() const { return m_hidden_spawns; }
     const std::string& get_map_name() const { return m_map_name; }
     const SpawnPoint& get_player_spawn() const { return m_player_spawn; }
 private:
@@ -43,6 +51,7 @@ private:
     std::vector<Waypoint> m_waypoints;
     std::vector<Objective> m_objectives;
     std::vector<DialogueLine> m_dialogue;
+    std::vector<HiddenSpawn> m_hidden_spawns;
     std::string m_map_name;
     SpawnPoint m_player_spawn{{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, 0};
 };
