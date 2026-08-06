@@ -230,7 +230,12 @@ bool Game::start_join(const std::string& host, uint16_t port) {
 
 void Game::update_campaign(float dt) {
     (void)dt;
-    // TODO: integrate mission/mission_update once main wires it in
+    if (!m_world) return;
+    auto& entities = m_world->get_entities();
+    for (auto& e : entities) {
+        if (!e.active) continue;
+        // Stub entity update; movement/combat applied via input/damage paths.
+    }
 }
 
 void Game::render_frame() const {

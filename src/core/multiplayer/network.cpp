@@ -135,6 +135,8 @@ std::vector<NetPacket> NetworkSystem::receive() {
         NetPacket pkt;
         std::memcpy(&pkt, buf, sizeof(pkt));
         out.push_back(pkt);
+    } else if (n > 0 && m_is_host) {
+        // hello or other text
     }
     return out;
 }

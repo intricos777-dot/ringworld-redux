@@ -1,16 +1,18 @@
 {
-  "mission_id": "the_descent",
-  "name": "The Descent",
-  "description": "The operative descends into the ringworld's foundation chamber. All alien strains converge: mutated grunts, techno-integrated elites, phantom stalkers. The Oracle Prime activates the final protocol. This is it.",
-  "map": "maps/deep_field.json",
+  "mission_id": "arc_collapse",
+  "name": "Arc Collapse",
+  "description": "The final descent into the ringworld's Arc Core chamber. Three apex aliens guard the destabilization trigger. The Oracle Prime has one chance to collapse the ring. Make it count.",
+  "map": "maps/arc_collapse.json",
   "spawn": {"x": 0.0, "y": -10.0, "z": 0.0},
+  "finale": true,
   "objectives": [
     {"id": 1, "description": "Descend to foundation chamber", "completed": false},
     {"id": 2, "description": "Survive the full alien convergence", "completed": false},
     {"id": 3, "description": "Defeat Oracle Warden", "completed": false},
     {"id": 4, "description": "Defeat Gravity Tyrant", "completed": false},
     {"id": 5, "description": "Defeat Phantom Prime", "completed": false},
-    {"id": 6, "description": "Destroy the Arc Core", "completed": false}
+    {"id": 6, "description": "Destroy the Arc Core", "completed": false},
+    {"id": 7, "description": "Escape the collapsing ring", "completed": false}
   ],
   "waypoints": [
     {"id": 1, "position": {"x": 5.0, "y": -10.0, "z": 2.0}, "radius": 2.0},
@@ -18,7 +20,8 @@
     {"id": 3, "position": {"x": 25.0, "y": -8.0, "z": -5.0}, "radius": 2.5},
     {"id": 4, "position": {"x": 35.0, "y": -10.0, "z": 0.0}, "radius": 2.0},
     {"id": 5, "position": {"x": 45.0, "y": -10.0, "z": 10.0}, "radius": 3.0},
-    {"id": 6, "position": {"x": 50.0, "y": -10.0, "z": 0.0}, "radius": 2.0}
+    {"id": 6, "position": {"x": 55.0, "y": -10.0, "z": 0.0}, "radius": 4.0},
+    {"id": 7, "position": {"x": 70.0, "y": -10.0, "z": 0.0}, "radius": 5.0}
   ],
   "dialogue": [
     {"trigger": "on_spawn", "speaker": "Oracle Prime", "line": "The final seal is within reach. All strains have converged. The Arc must be destroyed, or it will consume everything."},
@@ -27,25 +30,29 @@
     {"trigger": "objective_3_complete", "speaker": "Oracle Prime", "line": "Oracle Warden neutralized. Its shield network is down. The Tyrant is gravitic-locking the chamber."},
     {"trigger": "objective_4_complete", "speaker": "Lia", "line": "Gravity Tyrant is dead. But Phantom Prime just phased out of reality. Watch your flanks—it can strike from anywhere."},
     {"trigger": "objective_5_complete", "speaker": "Oracle Prime", "line": "Phantom Prime dissipated. The Arc Core is exposed. One shot. Make it count."},
-    {"trigger": "objective_6_complete", "speaker": "Lia", "line": "Arc Core destroyed. The ring is destabilizing. We need to evacuate—now. This is the end of the simulation, and the beginning of whatever comes next."}
+    {"trigger": "objective_6_complete", "speaker": "Lia", "line": "Arc Core destabilized. The ring is collapsing. We have ninety seconds to reach the evacuation point. Run."},
+    {"trigger": "objective_7_complete", "speaker": "Oracle Prime", "line": "Evacuation complete. The ring is gone. The simulation has ended. Welcome to the real."}
   ],
   "easter_eggs": [
     {"trigger": "warthog_launch", "name": "Warthog Launch", "description": "Vehicle launches into the sky. A classic testing bug turned feature."},
     {"trigger": "glitch_text", "name": "Glitch Text", "description": "Screen displays corrupted text. The asset cache is rejecting malformed glyphs."},
-    {"trigger": "infinite_ammo", "name": "Infinite Ammo", "description": "Weapon never reloads. Someone definitely edited the ammo tables."}
+    {"trigger": "infinite_ammo", "name": "Infinite Ammo", "description": "Weapon never reloads. Someone definitely edited the ammo tables."},
+    {"trigger": "ce_release_bug", "name": "CE Release Bug", "description": "Fourth-wall break: the game acknowledges it is a build with known issues."}
   ],
   "hidden_spawns": [
     {"id": 1, "x": 6.0, "y": -10.0, "z": 3.0, "enemy_type": 4, "count": 2},
     {"id": 2, "x": 16.0, "y": -10.0, "z": 1.0, "enemy_type": 5, "count": 2},
     {"id": 3, "x": 26.0, "y": -8.0, "z": -4.0, "enemy_type": 6, "count": 1},
     {"id": 4, "x": 36.0, "y": -10.0, "z": 1.0, "enemy_type": 7, "count": 2},
-    {"id": 5, "x": 46.0, "y": -10.0, "z": 11.0, "enemy_type": 5, "count": 3}
+    {"id": 5, "x": 46.0, "y": -10.0, "z": 11.0, "enemy_type": 5, "count": 3},
+    {"id": 6, "x": 56.0, "y": -10.0, "z": 1.0, "enemy_type": 8, "count": 2}
   ],
   "enemies": [
     {"type": "alien_grunt", "count": 6, "position": {"x": 5.0, "y": -10.0, "z": 2.0}},
     {"type": "alien_commander", "count": 1, "position": {"x": 15.0, "y": -10.0, "z": 0.0}},
     {"type": "seeker_bot", "count": 4, "position": {"x": 25.0, "y": -8.0, "z": -5.0}},
     {"type": "alien_elite", "count": 3, "position": {"x": 35.0, "y": -10.0, "z": 0.0}},
-    {"type": "alien_grunt", "count": 5, "position": {"x": 45.0, "y": -10.0, "z": 10.0}}
+    {"type": "alien_grunt", "count": 5, "position": {"x": 45.0, "y": -10.0, "z": 10.0}},
+    {"type": "arc_core", "count": 1, "position": {"x": 55.0, "y": -10.0, "z": 0.0}}
   ]
 }
