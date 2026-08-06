@@ -70,12 +70,48 @@ void SDLGLBackend::present() {
     }
 }
 
-bool SDLGLBackend::should_close() {
+bool SDLGLBackend::poll_events(PlayerController* controller) {
     SDL_Event ev;
     bool close = false;
     while (SDL_PollEvent(&ev)) {
         if (ev.type == SDL_QUIT) {
             close = true;
+        }
+        if (!controller) continue;
+        if (ev.type == SDL_KEYDOWN) {
+            switch (ev.key.keysym.sym) {
+                case SDLK_w: controller->set_key_state(InputKey::Forward, true); break;
+                case SDLK_s: controller->set_key_state(InputKey::Back, true); break;
+                case SDLK_a: controller->set_key_state(InputKey::Left, true); break;
+                case SDLK_d: controller->set_key_state(InputKey::Right, true); break;
+                case SDLK_SPACE: controller->set_key_state(InputKey::Jump, true); break;
+                case SDLK_LCTRL: controller->set_key_state(InputKey::Crouch, true); break;
+                case SDLK_LSHIFT: controller->set_key_state(InputKey::Sprint, true); break;
+                case SDLK_f: controller->set_key_state(InputKey::Fire, true); break;
+                case SDLK_r: controller->set_key_state(InputKey::Reload, true); break;
+                case SDLK_e: controller->set_key_state(InputKey::AltFire, true); break;
+                case SDLK_q: controller->set_key_state(InputKey::PrevWeapon, true); break;
+                case SDLK_TAB: controller->set_key_state(InputKey::NextWeapon, true); break;
+                case SDLK_ESCAPE: controller->set_key_state(InputKey::Escape, true); break;
+                default: break;
+            }
+        } else if (ev.type == SDL_KEYUP) {
+            switch (ev.key.keysym.sym) {
+                case SDLK_w: controller->set_key_state(InputKey::Forward, false); break;
+                case SDLK_s: controller->set_key_state(InputKey::Back, false); break;
+                case SDLK_a: controller->set_key_state(InputKey::Left, false); break;
+                case SDLK_d: controller->set_key_state(InputKey::Right, false); break;
+                case SDLK_SPACE: controller->set_key_state(InputKey::Jump, false); break;
+                case SDLK_LCTRL: controller->set_key_state(InputKey::Crouch, false); break;
+                case SDLK_LSHIFT: controller->set_key_state(InputKey::Sprint, false); break;
+                case SDLK_f: controller->set_key_state(InputKey::Fire, false); break;
+                case SDLK_r: controller->set_key_state(InputKey::Reload, false); break;
+                case SDLK_e: controller->set_key_state(InputKey::AltFire, false); break;
+                case SDLK_q: controller->set_key_state(InputKey::PrevWeapon, false); break;
+                case SDLK_TAB: controller->set_key_state(InputKey::NextWeapon, false); break;
+                case SDLK_ESCAPE: controller->set_key_state(InputKey::Escape, false); break;
+                default: break;
+            }
         }
     }
     return close;

@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <SDL2/SDL.h>
-#include <GL/gl.h>
+#include "player/controller.h"
 
 namespace tehi {
 
@@ -14,7 +14,7 @@ public:
     void begin_frame();
     void end_frame();
     void present();
-    bool should_close();
+    bool poll_events(PlayerController* controller);
     void* native_window();
 private:
     bool m_initialized = false;

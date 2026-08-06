@@ -128,7 +128,7 @@ void Game::render_frame() const {
         draw_hud();
         m_renderer->end_frame();
         m_renderer->present();
-        if (m_renderer->should_close()) {
+        if (m_renderer->poll_events(m_controller.get())) {
             m_should_close = true;
         }
     } else {
