@@ -11,8 +11,8 @@ add_library(tehi-core STATIC
     src/core/game.cpp
     src/core/world.cpp
 )
-target_link_libraries(tehi-core PUBLIC te-engine te-renderer te-asset)
-target_include_directories(tehi-core PUBLIC include)
+target_link_libraries(tehi-core PUBLIC te-engine te-renderer te-asset tehi-player tehi-ui)
+target_include_directories(tehi-core PUBLIC include src)
 
 # Player controller
 add_library(tehi-player STATIC
