@@ -16,6 +16,7 @@ add_library(tehi-core STATIC
     src/core/easter_eggs.cpp
     src/core/achievements.cpp
     src/core/level_modifier.cpp
+    src/core/save_system.cpp
     src/renderer/render_bridge.cpp
     src/audio/audio_script.cpp
 )

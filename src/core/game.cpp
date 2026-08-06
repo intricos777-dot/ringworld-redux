@@ -9,6 +9,7 @@
 #include "core/game_mode.h"
 #include "core/easter_eggs.h"
 #include "core/achievements.h"
+#include "core/save_system.h"
 #include "renderer/render_bridge.h"
 #include "audio/audio_script.h"
 #include <cstdio>
@@ -35,7 +36,9 @@ bool Game::initialize() {
     m_renderer->initialize(nullptr);
     m_audio_script = std::make_unique<AudioScript>();
     m_audio_script->load("maps/signal_lost.json");
-    AchievementSystem::instance().initialize();
+    m_save = std::make_unique<SaveSystem>();
+    m_save->initialize();
+    m_save->load("savegame.sav");
     spawn_initial_entities();
     m_controller->set_controller_type(ControllerType::XboxOne);
     std::printf("[Game] Main menu — controller: Xbox One | Fire / Enter to start\n");

@@ -13,6 +13,7 @@ class AISquad;
 class Inventory;
 class RenderBridge;
 class AudioScript;
+class SaveSystem;
 class AchievementSystem;
 
 class Game {
@@ -41,6 +42,7 @@ private:
     std::unique_ptr<Inventory> m_alien_inventory;
     std::unique_ptr<RenderBridge> m_renderer;
     std::unique_ptr<AudioScript> m_audio_script;
+    std::unique_ptr<SaveSystem> m_save;
 
     uint32_t m_equipped_main = 3;      // M4A1_CARBINE
     uint32_t m_equipped_secondary = 1;  // M17_9MM

@@ -3,18 +3,22 @@
 
 namespace tehi {
 
+static const char* MENU_LABELS[] = {
+    "Start Campaign",
+    "Start Sandbox",
+    "Host Game",
+    "Join Game",
+    "Quit"
+};
+
 bool MainMenu::initialize() {
-    m_options.clear();
-    m_options.push_back({1, "Casual", true});
-    m_options.push_back({2, "Legend", false});
-    m_selected_index = 0;
     m_active = true;
+    m_selected_action = MenuAction::StartCampaign;
     std::printf("[Menu] Main menu initialized\n");
     return true;
 }
 
 void MainMenu::shutdown() {
-    m_options.clear();
     m_active = false;
 }
 
@@ -27,25 +31,19 @@ void MainMenu::update(float dt) {
 void MainMenu::render() const {
     if (!m_active) return;
     std::printf("\n[Menu] ==============================\n");
-    for (size_t i = 0; i < m_options.size(); ++i) {
-        const char* sel = (i == m_selected_index) ? ">" : " ";
-        std::printf("[Menu] %s %s\n", sel, m_options[i].label.c_str());
+    for (size_t i = 0; i < sizeof(MENU_LABELS) / sizeof(MENU_LABELS[0]); ++i) {
+        MenuAction act = (MenuAction)(i + 1);
+        const char* sel = (act == m_selected_action) ? ">" : " ";
+        std::printf("[Menu] %s %s\n", sel, MENU_LABELS[i]);
     }
     std::printf("[Menu] ==============================\n");
 }
 
 void MainMenu::move_selection(int direction) {
-    if (m_options.empty()) return;
-    m_selected_index = (uint32_t)(((int)m_selected_index + direction + (int)m_options.size()) % (int)m_options.size());
-}
-
-bool MainMenu::confirm_selection() {
-    if (m_options.empty()) return false;
-    std::printf("[Menu] Selected: %s\n", m_options[m_selected_index].label.c_str());
-    if (m_options[m_selected_index].id == 1) {
-        std::printf("[Menu] Starting new game in Casual mode\n");
-    }
-    return true;
+    int count = (int)(sizeof(MENU_LABELS) / sizeof(MENU_LABELS[0]));
+    int cur = (int)m_selected_action - 1;
+    cur = (cur + direction + count) % count;
+    m_selected_action = (MenuAction)(cur + 1);
 }
 
 } // namespace tehi
