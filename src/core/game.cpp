@@ -17,6 +17,7 @@
 #include <cstdlib>
 #include <chrono>
 #include <thread>
+#include <cmath>
 
 namespace tehi {
 
@@ -64,6 +65,13 @@ void Game::run() {
     const auto tick_duration = std::chrono::milliseconds(16);
 
     std::printf("[Game] Running...\n");
+    if (std::getenv("RR_TEST_FIRE")) {
+        if (m_world && !m_world->get_entities().empty()) {
+            const auto& e = m_world->get_entities().front();
+            std::printf("[Test] RR_TEST_FIRE -> apply_weapon_damage toward entity %u at (%.1f,%.1f,%.1f)\n", e.id, e.position[0], e.position[1], e.position[2]);
+            apply_weapon_damage(e.position[0], e.position[1], e.position[2], 2.0f, 10.0f);
+        }
+    }
     while (m_running && !m_should_close) {
         std::this_thread::sleep_until(next_tick);
         next_tick += tick_duration;
@@ -71,14 +79,6 @@ void Game::run() {
         float dt = 1.0f / 60.0f;
         if (m_world) m_world->update(dt);
         if (m_network) m_network->update(dt);
-        if (!m_test_fire_ran && std::getenv("RR_TEST_FIRE")) {
-            m_test_fire_ran = true;
-            if (m_world && !m_world->get_entities().empty()) {
-                const auto& e = m_world->get_entities().front();
-                std::printf("[Test] RR_TEST_FIRE -> apply_weapon_damage toward entity %u at (%.1f,%.1f,%.1f)\n", e.id, e.position[0], e.position[1], e.position[2]);
-                apply_weapon_damage(e.position[0], e.position[1], e.position[2], 2.0f, 10.0f);
-            }
-        }
         update_input(dt);
         update_campaign(dt);
         get_easter_egg_system().update(dt);
@@ -104,15 +104,6 @@ Game& Game::instance() {
 void Game::update_input(float dt) {
     (void)dt;
     if (!m_controller) return;
-    static bool test_fired = false;
-    if (!test_fired && std::getenv("RR_TEST_FIRE")) {
-        test_fired = true;
-        if (m_world && !m_world->get_entities().empty()) {
-            const auto& e = m_world->get_entities().front();
-            std::printf("[Test] RR_TEST_FIRE -> apply_weapon_damage toward entity %u\n", e.id);
-            apply_weapon_damage(e.position[0], e.position[1], e.position[2], 2.0f, 10.0f);
-        }
-    }
     if (m_menu && m_menu->is_active()) {
         if (m_controller->wants_fire() || m_controller->wants_next_weapon()) {
             switch (m_menu->get_selected_action()) {
@@ -141,12 +132,41 @@ void Game::update_input(float dt) {
         }
         return;
     }
+    float move_speed = m_controller->wants_sprint() ? 6.0f : 3.0f;
+    float fwd = m_controller->wants_forward() ? 1.0f : m_controller->wants_back() ? -1.0f : 0.0f;
+    float strafe = m_controller->wants_right() ? 1.0f : m_controller->wants_left() ? -1.0f : 0.0f;
+    float cam_yaw = m_world ? m_world->get_camera().yaw : 0.0f;
+    float cosy = std::cos(cam_yaw);
+    float siny = std::sin(cam_yaw);
+    m_player_velocity[0] = (cosy * fwd - siny * strafe) * move_speed;
+    m_player_velocity[2] = (-siny * fwd - cosy * strafe) * move_speed;
+    m_player_position[0] += m_player_velocity[0] * dt;
+    m_player_position[1] += m_player_velocity[1] * dt;
+    m_player_position[2] += m_player_velocity[2] * dt;
+    if (m_world) {
+        tehi::CameraState cam_state;
+        cam_state.position[0] = m_player_position[0];
+        cam_state.position[1] = m_player_position[1] + 1.6f;
+        cam_state.position[2] = m_player_position[2];
+        cam_state.yaw = cam_yaw;
+        cam_state.pitch = m_world->get_camera().pitch;
+        cam_state.fov = m_world->get_camera().fov;
+        m_world->set_camera(cam_state);
+    }
     if (m_controller->wants_fire()) {
         uint32_t id = m_active_slot == 0 ? m_equipped_main : m_active_slot == 1 ? m_equipped_secondary : m_equipped_space;
         const auto* spec = get_weapon_spec((RealWeaponID)id);
         if (spec) {
             std::printf("[Weapon] Fired %s dmg=%.1f\n", spec->display_name, spec->damage);
-            apply_weapon_damage(0.0f, 0.0f, 0.0f, spec->effective_range, spec->damage);
+            apply_weapon_damage(m_player_position[0], m_player_position[1], m_player_position[2], spec->effective_range, spec->damage);
+        }
+    }
+    if (m_controller->wants_alt_fire()) {
+        uint32_t id = m_active_slot == 0 ? m_equipped_main : m_active_slot == 1 ? m_equipped_secondary : m_equipped_space;
+        const auto* spec = get_weapon_spec((RealWeaponID)id);
+        if (spec) {
+            std::printf("[Weapon] Alt fire %s dmg=%.1f\n", spec->display_name, spec->damage);
+            apply_weapon_damage(m_player_position[0], m_player_position[1], m_player_position[2], spec->effective_range * 0.5f, spec->damage * 2.0f);
         }
     }
     if (m_controller->wants_reload()) {

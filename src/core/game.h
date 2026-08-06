@@ -52,6 +52,8 @@ private:
     uint32_t m_equipped_secondary = 1;  // M17_9MM
     uint32_t m_equipped_space = 12;     // PLASMA_RIFLE
     uint32_t m_active_slot = 0;         // 0=Main, 1=Secondary, 2=Space
+    float m_player_position[3] = {0.0f, 0.0f, -5.0f};
+    float m_player_velocity[3] = {0.0f, 0.0f, 0.0f};
 
     void update_input(float dt);
     void update_campaign(float dt);

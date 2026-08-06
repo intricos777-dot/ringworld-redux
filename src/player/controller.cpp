@@ -33,6 +33,7 @@ void PlayerController::set_key_state(InputKey key, bool pressed) {
         m_key_state &= ~mask;
     }
     if (key == InputKey::Fire) m_fire_pressed = pressed;
+    if (key == InputKey::AltFire) m_alt_fire_pressed = pressed;
     if (key == InputKey::Reload) m_reload_pressed = pressed;
     if (key == InputKey::NextWeapon) m_next_pressed = pressed;
     if (key == InputKey::PrevWeapon) m_prev_pressed = pressed;

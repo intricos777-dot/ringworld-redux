@@ -26,9 +26,15 @@ public:
 
     void set_key_state(InputKey key, bool pressed);
     bool wants_fire() const { return m_fire_pressed; }
+    bool wants_alt_fire() const { return m_alt_fire_pressed; }
     bool wants_reload() const { return m_reload_pressed; }
     bool wants_next_weapon() const { return m_next_pressed; }
     bool wants_prev_weapon() const { return m_prev_pressed; }
+    bool wants_forward() const { return is_key_down(InputKey::Forward); }
+    bool wants_back() const { return is_key_down(InputKey::Back); }
+    bool wants_left() const { return is_key_down(InputKey::Left); }
+    bool wants_right() const { return is_key_down(InputKey::Right); }
+    bool wants_sprint() const { return is_key_down(InputKey::Sprint); }
 
     void set_controller_type(ControllerType type);
     ControllerType get_controller_type() const { return m_controller_type; }
@@ -38,6 +44,7 @@ private:
     uint64_t m_key_state{0};
     ControllerType m_controller_type{ControllerType::Keyboard};
     mutable bool m_fire_pressed = false;
+    mutable bool m_alt_fire_pressed = false;
     mutable bool m_reload_pressed = false;
     mutable bool m_next_pressed = false;
     mutable bool m_prev_pressed = false;
