@@ -63,6 +63,12 @@ bool Game::initialize() {
     return true;
 }
 
+bool Game::load_mission(const char* path) {
+    if (!path || !m_mission) return false;
+    std::printf("[Game] Loading mission: %s\n", path);
+    return m_mission->initialize(path);
+}
+
 void Game::run() {
     using clock = std::chrono::steady_clock;
     auto next_tick = clock::now();

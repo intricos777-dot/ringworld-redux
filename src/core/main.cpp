@@ -52,6 +52,7 @@ int main() {
     campaign.initialize();
     if (!campaign.missions().empty()) {
         std::printf("[main] Current mission: %s\n", campaign.current()->name.c_str());
+        game.load_mission(campaign.current()->map.c_str());
     }
 
     tehi::HUD hud;

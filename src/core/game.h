@@ -24,6 +24,7 @@ public:
     ~Game();
 
     bool initialize();
+    bool load_mission(const char* path);
     void run();
     void shutdown();
 
