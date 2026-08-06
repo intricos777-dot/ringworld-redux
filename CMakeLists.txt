@@ -44,6 +44,8 @@ target_link_libraries(tehi-ai PRIVATE tehi-core)
 # Campaign / Co-op
 add_library(tehi-campaign STATIC
     src/campaign/mission.cpp
+    src/campaign/roster.cpp
+    src/campaign/companion.cpp
 )
 target_link_libraries(tehi-campaign PRIVATE tehi-core)
 
@@ -68,5 +70,6 @@ target_link_libraries(tehi-ui PRIVATE tehi-core)
 # Test runner
 enable_testing()
 add_executable(tehi-test src/core/main.cpp)
-target_link_libraries(tehi-test PRIVATE tehi-core tehi-player tehi-weapons tehi-world tehi-ai)
+target_include_directories(tehi-test PRIVATE src)
+target_link_libraries(tehi-test PRIVATE te-engine tehi-campaign)
 add_test(NAME tehi-core COMMAND tehi-test)
