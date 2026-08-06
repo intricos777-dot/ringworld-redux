@@ -386,11 +386,7 @@ void NetworkSystem::pump_receive() {
         process_datagram(*p, buf, (size_t)n);
     }
 
-    for (auto& p : m_peers) {
-        if (!p.have_addr || !p.needs_ack) continue;
-        send_frame(p, nullptr, 0, kMsgAck, 0);
-        p.needs_ack = false;
-    }
+    errno = 0;
 }
 
 void NetworkSystem::process_datagram(Peer& p, const uint8_t* data, size_t len) {

@@ -11,7 +11,6 @@ enum class MenuAction : uint32_t {
     StartSandbox,
     HostGame,
     JoinGame,
-    Settings,
     Quit
 };
 

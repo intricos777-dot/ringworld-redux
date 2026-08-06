@@ -104,7 +104,7 @@ void Game::run() {
                 auto pkts = m_network->receive();
                 for (const auto& pkt : pkts) {
                     if (pkt.type == 1) {
-                        uint64_t count = 0;
+                        uint32_t count = 0;
                         std::memcpy(&count, pkt.data, sizeof(count));
                         if (count > 12) count = 12;
                         auto& entities = m_world->get_entities();
@@ -258,12 +258,7 @@ void Game::update_campaign(float dt) {
     (void)dt;
     if (!m_mission) return;
     const char* skip = getenv("RR_CAMPAIGN_SKIP");
-    float player_pos[3] = {5.0f, -10.0f, 2.0f};
-    if (skip && skip[0] == '1') {
-        m_mission->update(dt, nullptr);
-        return;
-    }
-    m_mission->update(dt, player_pos);
+    m_mission->update(dt, m_player_position);
 }
 
 void Game::render_frame() const {

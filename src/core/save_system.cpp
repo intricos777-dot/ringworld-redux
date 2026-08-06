@@ -12,6 +12,7 @@ bool SaveSystem::initialize() {
     std::memset(&m_record, 0, sizeof(m_record));
     std::memset(&m_shadow, 0, sizeof(m_shadow));
     m_record.health = 100;
+    m_shadow = m_record;
     m_corrupted = false;
     std::printf("[Save] Save system initialized\n");
     return true;
