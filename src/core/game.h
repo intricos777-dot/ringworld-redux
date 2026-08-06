@@ -14,6 +14,7 @@ class Inventory;
 class SDLGLBackend;
 class AudioScript;
 class SaveSystem;
+class NetworkSystem;
 class AchievementSystem;
 
 class Game {
@@ -44,6 +45,7 @@ private:
     std::unique_ptr<SDLGLBackend> m_renderer;
     std::unique_ptr<AudioScript> m_audio_script;
     std::unique_ptr<SaveSystem> m_save;
+    std::unique_ptr<NetworkSystem> m_network;
 
     uint32_t m_equipped_main = 3;      // M4A1_CARBINE
     uint32_t m_equipped_secondary = 1;  // M17_9MM
@@ -58,6 +60,8 @@ private:
     void cycle_weapon(int direction);
     void spawn_initial_entities();
     void apply_weapon_damage(float x, float y, float z, float radius, float damage);
+    bool start_host(uint16_t port = 7777);
+    bool start_join(const std::string& host, uint16_t port = 7777);
 };
 
 } // namespace tehi

@@ -10,6 +10,7 @@
 #include "core/easter_eggs.h"
 #include "core/achievements.h"
 #include "core/save_system.h"
+#include "core/multiplayer/network.h"
 #include "renderer/sdl_gl_backend.h"
 #include "audio/audio_script.h"
 #include <cstdio>
@@ -39,6 +40,7 @@ bool Game::initialize() {
     m_save = std::make_unique<SaveSystem>();
     m_save->initialize();
     m_save->load("savegame.sav");
+    m_network = std::make_unique<NetworkSystem>();
     spawn_initial_entities();
     m_controller->set_controller_type(ControllerType::XboxOne);
     std::printf("[Game] Main menu — controller: Xbox One | Fire / Enter to start\n");
@@ -59,6 +61,7 @@ void Game::run() {
 
         float dt = 1.0f / 60.0f;
         if (m_world) m_world->update(dt);
+        if (m_network) m_network->update(dt);
         update_input(dt);
         update_campaign(dt);
         get_easter_egg_system().update(dt);
@@ -86,9 +89,23 @@ void Game::update_input(float dt) {
     if (!m_controller) return;
     if (m_menu && m_menu->is_active()) {
         if (m_controller->wants_fire() || m_controller->wants_next_weapon()) {
-            if (m_menu->get_selected_action() == MenuAction::Quit) {
-                m_running = false;
-                return;
+            switch (m_menu->get_selected_action()) {
+                case MenuAction::Quit:
+                    m_running = false;
+                    return;
+                case MenuAction::HostGame:
+                    if (start_host()) {
+                        m_menu->set_active(false);
+                        m_main_menu = false;
+                    }
+                    return;
+                case MenuAction::JoinGame:
+                    start_join("127.0.0.1");
+                    m_menu->set_active(false);
+                    m_main_menu = false;
+                    return;
+                default:
+                    break;
             }
         }
         if (m_controller->wants_prev_weapon()) {
@@ -115,6 +132,26 @@ void Game::update_input(float dt) {
     if (m_controller->wants_prev_weapon()) {
         cycle_weapon(-1);
     }
+}
+
+bool Game::start_host(uint16_t port) {
+    if (!m_network) return false;
+    if (m_network->host(port)) {
+        std::printf("[Game] Hosting multiplayer on port %u\n", (unsigned)port);
+        return true;
+    }
+    std::fprintf(stderr, "[Game] Failed to host multiplayer\n");
+    return false;
+}
+
+bool Game::start_join(const std::string& host, uint16_t port) {
+    if (!m_network) return false;
+    if (m_network->join(host, port)) {
+        std::printf("[Game] Joining multiplayer at %s:%u\n", host.c_str(), (unsigned)port);
+        return true;
+    }
+    std::fprintf(stderr, "[Game] Failed to join multiplayer\n");
+    return false;
 }
 
 void Game::update_campaign(float dt) {
