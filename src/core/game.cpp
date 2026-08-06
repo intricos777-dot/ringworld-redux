@@ -10,7 +10,7 @@
 #include "core/easter_eggs.h"
 #include "core/achievements.h"
 #include "core/save_system.h"
-#include "renderer/render_bridge.h"
+#include "renderer/sdl_gl_backend.h"
 #include "audio/audio_script.h"
 #include <cstdio>
 #include <chrono>
@@ -32,8 +32,8 @@ bool Game::initialize() {
     m_hud->initialize();
     m_menu = std::make_unique<MainMenu>();
     m_menu->initialize();
-    m_renderer = std::make_unique<RenderBridge>();
-    m_renderer->initialize(nullptr);
+    m_renderer = std::make_unique<SDLGLBackend>();
+    m_renderer->initialize(1280, 720, "Ringworld Redux");
     m_audio_script = std::make_unique<AudioScript>();
     m_audio_script->load("maps/signal_lost.json");
     m_save = std::make_unique<SaveSystem>();
@@ -53,7 +53,7 @@ void Game::run() {
     const auto tick_duration = std::chrono::milliseconds(16);
 
     std::printf("[Game] Running...\n");
-    while (m_running) {
+    while (m_running && !m_should_close) {
         std::this_thread::sleep_until(next_tick);
         next_tick += tick_duration;
 
@@ -114,6 +114,9 @@ void Game::render_frame() const {
         draw_hud();
         m_renderer->end_frame();
         m_renderer->present();
+        if (m_renderer->should_close()) {
+            m_should_close = true;
+        }
     } else {
         draw_hud();
     }

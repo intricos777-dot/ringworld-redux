@@ -11,7 +11,7 @@ class World;
 class MainMenu;
 class AISquad;
 class Inventory;
-class RenderBridge;
+class SDLGLBackend;
 class AudioScript;
 class SaveSystem;
 class AchievementSystem;
@@ -30,6 +30,7 @@ public:
 
 private:
     bool m_running = false;
+    mutable bool m_should_close = false;
     bool m_initialized = false;
     bool m_main_menu = true;
     std::unique_ptr<World> m_world;
@@ -40,7 +41,7 @@ private:
     std::unique_ptr<AISquad> m_alien_squad;
     std::unique_ptr<Inventory> m_human_inventory;
     std::unique_ptr<Inventory> m_alien_inventory;
-    std::unique_ptr<RenderBridge> m_renderer;
+    std::unique_ptr<SDLGLBackend> m_renderer;
     std::unique_ptr<AudioScript> m_audio_script;
     std::unique_ptr<SaveSystem> m_save;
 
