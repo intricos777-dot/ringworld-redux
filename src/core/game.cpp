@@ -66,12 +66,15 @@ void Game::run() {
 
     std::printf("[Game] Running...\n");
     if (std::getenv("RR_TEST_FIRE")) {
+        if (m_menu) m_menu->set_active(false);
+        m_main_menu = false;
         if (m_world && !m_world->get_entities().empty()) {
             const auto& e = m_world->get_entities().front();
             std::printf("[Test] RR_TEST_FIRE -> apply_weapon_damage toward entity %u at (%.1f,%.1f,%.1f)\n", e.id, e.position[0], e.position[1], e.position[2]);
             apply_weapon_damage(e.position[0], e.position[1], e.position[2], 2.0f, 10.0f);
         }
     }
+    int test_fire_frames = 0;
     while (m_running && !m_should_close) {
         std::this_thread::sleep_until(next_tick);
         next_tick += tick_duration;
@@ -79,6 +82,16 @@ void Game::run() {
         float dt = 1.0f / 60.0f;
         if (m_world) m_world->update(dt);
         if (m_network) m_network->update(dt);
+        if (std::getenv("RR_TEST_FIRE") && test_fire_frames < 3) {
+            ++test_fire_frames;
+            m_controller->set_key_state(InputKey::Fire, true);
+            m_controller->set_key_state(InputKey::AltFire, true);
+            m_controller->set_key_state(InputKey::Reload, true);
+            update_input(dt);
+            m_controller->set_key_state(InputKey::Fire, false);
+            m_controller->set_key_state(InputKey::AltFire, false);
+            m_controller->set_key_state(InputKey::Reload, false);
+        }
         update_input(dt);
         update_campaign(dt);
         get_easter_egg_system().update(dt);
