@@ -40,6 +40,7 @@ private:
     void apply_loadout();
     void cycle_weapon(int direction);
     void spawn_initial_entities();
+    void apply_weapon_damage(float x, float y, float z, float radius, float damage);
 };
 
 } // namespace tehi

@@ -10,6 +10,8 @@ struct Entity {
     float rotation[3] = {0.0f, 0.0f, 0.0f};
     uint32_t type = 0;
     bool active = true;
+    float health = 100.0f;
+    float shield = 0.0f;
 };
 
 class World {
@@ -19,6 +21,7 @@ public:
     bool initialize();
     void update(float dt);
     Entity* spawn_entity(uint32_t type, float x, float y, float z);
+    void damage_entity(uint32_t entity_id, float amount);
     std::vector<Entity>& get_entities() { return m_entities; }
 private:
     std::vector<Entity> m_entities;

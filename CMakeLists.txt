@@ -10,6 +10,7 @@ add_subdirectory(/home/sin/Projects/twilight-elysium ${CMAKE_BINARY_DIR}/twiligh
 add_library(tehi-core STATIC
     src/core/game.cpp
     src/core/world.cpp
+    src/core/game_state.cpp
 )
 target_link_libraries(tehi-core PUBLIC te-engine te-renderer te-asset tehi-player tehi-ui)
 target_include_directories(tehi-core PUBLIC include src)

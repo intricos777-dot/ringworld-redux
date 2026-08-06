@@ -22,6 +22,8 @@ bool Game::initialize() {
     m_hud = std::make_unique<HUD>();
     m_hud->initialize();
     spawn_initial_entities();
+    m_controller->set_controller_type(ControllerType::XboxOne);
+    std::printf("[Game] Main menu — controller: Xbox One | Fire / Enter to start\n");
     m_running = true;
     m_initialized = true;
     return true;
@@ -66,7 +68,10 @@ void Game::update_input(float dt) {
     if (m_controller->wants_fire()) {
         uint32_t id = m_active_slot == 0 ? m_equipped_main : m_active_slot == 1 ? m_equipped_secondary : m_equipped_space;
         const auto* spec = get_weapon_spec((RealWeaponID)id);
-        if (spec) std::printf("[Weapon] Fired %s dmg=%.1f\n", spec->display_name, spec->damage);
+        if (spec) {
+            std::printf("[Weapon] Fired %s dmg=%.1f\n", spec->display_name, spec->damage);
+            apply_weapon_damage(0.0f, 0.0f, 0.0f, spec->effective_range, spec->damage);
+        }
     }
     if (m_controller->wants_reload()) {
         std::printf("[Input] Reload pressed\n");
@@ -108,6 +113,24 @@ void Game::spawn_initial_entities() {
     m_world->spawn_entity(3, -2.0f, 0.0f, 5.0f);
     m_world->spawn_entity(4, 10.0f, 0.0f, 0.0f);
     std::printf("[Game] Initial entities spawned\n");
+}
+
+void Game::apply_weapon_damage(float x, float y, float z, float radius, float damage) {
+    if (!m_world) return;
+    auto& entities = m_world->get_entities();
+    bool hit = false;
+    for (auto& e : entities) {
+        if (!e.active || e.type == 1) continue;
+        float dx = e.position[0] - x;
+        float dy = e.position[1] - y;
+        float dz = e.position[2] - z;
+        float dist = dx*dx + dy*dy + dz*dz;
+        if (dist <= radius * radius) {
+            std::printf("[Weapon] Hit entity %u at dist %.2f dmg=%.1f\n", e.id, dist, damage);
+            hit = true;
+        }
+    }
+    if (!hit) std::printf("[Weapon] Missed\n");
 }
 
 void Game::cycle_weapon(int direction) {
