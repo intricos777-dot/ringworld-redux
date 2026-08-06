@@ -15,6 +15,7 @@ struct ClientEntry {
     uint32_t id;
     uint32_t ip;
     uint16_t port;
+    int tcp_socket;
 };
 
 class NetworkSystem {
@@ -33,6 +34,7 @@ private:
     bool m_is_host = false;
     uint32_t m_client_id = 0;
     int m_socket = -1;
+    int m_listen_socket = -1;
     std::string m_host;
     uint16_t m_port = 0;
     std::vector<ClientEntry> m_clients;
