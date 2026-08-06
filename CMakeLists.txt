@@ -38,6 +38,7 @@ target_link_libraries(tehi-vehicles PRIVATE tehi-core)
 add_library(tehi-ai STATIC
     src/ai/bot.cpp
     src/ai/navmesh.cpp
+    src/ai/enemy.cpp
 )
 target_link_libraries(tehi-ai PRIVATE tehi-core)
 

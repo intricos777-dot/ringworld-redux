@@ -12,6 +12,7 @@ public:
     void draw_health(float health);
     void draw_shield(float shield);
     void draw_ammo(uint32_t current, uint32_t reserve);
+    void render() const;
 };
 
 } // namespace tehi
