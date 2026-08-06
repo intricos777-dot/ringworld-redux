@@ -55,11 +55,6 @@ bool Game::initialize() {
         m_network->host(port);
     }
     m_mission = std::make_unique<Mission>();
-    tehi::Campaign campaign;
-    campaign.initialize();
-    if (!campaign.missions().empty()) {
-        m_mission->initialize(campaign.current()->map);
-    }
     spawn_initial_entities();
     m_controller->set_controller_type(ControllerType::XboxOne);
     std::printf("[Game] Main menu — controller: Xbox One | Fire / Enter to start\n");

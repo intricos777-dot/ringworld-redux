@@ -23,7 +23,7 @@ bool Campaign::initialize() {
         cm.id = m.id();
         cm.name = m.name();
         cm.description = m.description();
-        cm.map = m.map();
+        cm.map = path;
         m_missions.push_back(cm);
     }
     std::printf("[Campaign] Loaded %u missions\n", (unsigned)m_missions.size());
