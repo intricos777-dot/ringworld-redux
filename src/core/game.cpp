@@ -14,6 +14,7 @@
 #include "renderer/sdl_gl_backend.h"
 #include "audio/audio_script.h"
 #include <cstdio>
+#include <cstdlib>
 #include <chrono>
 #include <thread>
 
@@ -34,13 +35,21 @@ bool Game::initialize() {
     m_menu = std::make_unique<MainMenu>();
     m_menu->initialize();
     m_renderer = std::make_unique<SDLGLBackend>();
-    m_renderer->initialize(1280, 720, "Ringworld Redux");
+    if (!m_renderer->initialize(1280, 720, "Ringworld Redux")) {
+        std::fprintf(stderr, "Failed to init renderer\n");
+        return false;
+    }
     m_audio_script = std::make_unique<AudioScript>();
     m_audio_script->load("maps/signal_lost.json");
     m_save = std::make_unique<SaveSystem>();
     m_save->initialize();
     m_save->load("savegame.sav");
     m_network = std::make_unique<NetworkSystem>();
+    if (getenv("RR_AUTO_HOST")) {
+        uint16_t port = (uint16_t)std::atoi(getenv("RR_AUTO_HOST"));
+        if (port == 0) port = 7777;
+        if (m_network) m_network->host(port);
+    }
     spawn_initial_entities();
     m_controller->set_controller_type(ControllerType::XboxOne);
     std::printf("[Game] Main menu — controller: Xbox One | Fire / Enter to start\n");
