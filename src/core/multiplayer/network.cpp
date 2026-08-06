@@ -59,14 +59,13 @@ bool NetworkSystem::join(const std::string& host, uint16_t port) {
         m_socket = -1;
         return false;
     }
-    // Send a hello to punch NAT/host-state
     const char* hello = "HELLO";
     sendto(m_socket, hello, 5, 0, (sockaddr*)&dest, sizeof(dest));
     std::printf("[Network] Joining %s:%u\n", host.c_str(), port);
     return true;
 }
 
-void NetworkSystem::update(float dt) {
+void NetworkSystem::update(float dt, const float* entity_positions, uint32_t entity_count) {
     (void)dt;
     if (m_socket < 0) return;
     char buf[256];
@@ -75,17 +74,47 @@ void NetworkSystem::update(float dt) {
     ssize_t n = recvfrom(m_socket, buf, sizeof(buf) - 1, MSG_DONTWAIT, (sockaddr*)&from, &fromlen);
     if (n > 0) {
         buf[n] = 0;
+        if (m_is_host) {
+            bool known = false;
+            uint32_t ip = ntohl(from.sin_addr.s_addr);
+            uint16_t port = ntohs(from.sin_port);
+            for (const auto& c : m_clients) {
+                if (c.ip == ip && c.port == port) { known = true; break; }
+            }
+            if (!known && m_clients.size() < 16) {
+                ClientEntry c;
+                c.id = (uint32_t)(m_clients.size() + 2);
+                c.ip = ip;
+                c.port = port;
+                m_clients.push_back(c);
+                std::printf("[Network] Client %u connected from %s:%u\n", c.id, inet_ntoa(from.sin_addr), port);
+            }
+        }
         std::printf("[Network] recv %zd bytes from %s\n", n, inet_ntoa(from.sin_addr));
+    }
+    if (m_is_host && entity_positions && entity_count > 0) {
+        std::printf("[Network] broadcasting %u entities\n", entity_count);
+        uint32_t count = entity_count > 12 ? 12 : entity_count;
+        size_t bytes = sizeof(uint32_t) + count * 3 * sizeof(float);
+        if (bytes > sizeof(buf)) bytes = sizeof(buf);
+        std::memcpy(buf, &count, sizeof(count));
+        std::memcpy(buf + sizeof(count), entity_positions, bytes - sizeof(count));
+        sockaddr_in dest{};
+        dest.sin_family = AF_INET;
+        dest.sin_port = htons(m_port);
+        dest.sin_addr.s_addr = htonl(INADDR_BROADCAST);
+        int opt = 1;
+        setsockopt(m_socket, SOL_SOCKET, SO_BROADCAST, &opt, sizeof(opt));
+        sendto(m_socket, buf, bytes, 0, (sockaddr*)&dest, sizeof(dest));
     }
 }
 
 void NetworkSystem::broadcast_state(const float* state, size_t bytes) {
-    if (m_socket < 0) return;
+    if (m_socket < 0 || !state || bytes == 0) return;
     sockaddr_in dest{};
     dest.sin_family = AF_INET;
     dest.sin_port = htons(m_port);
     if (m_is_host) {
-        // host broadcasts to 255.255.255.255 so all clients receive
         dest.sin_addr.s_addr = htonl(INADDR_BROADCAST);
         int opt = 1;
         setsockopt(m_socket, SOL_SOCKET, SO_BROADCAST, &opt, sizeof(opt));

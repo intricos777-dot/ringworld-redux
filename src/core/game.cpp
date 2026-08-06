@@ -81,7 +81,22 @@ void Game::run() {
 
         float dt = 1.0f / 60.0f;
         if (m_world) m_world->update(dt);
-        if (m_network) m_network->update(dt);
+        if (m_network) {
+            if (!m_world->get_entities().empty()) {
+                static float net_buf[12 * 3];
+                uint32_t n = 0;
+                for (const auto& e : m_world->get_entities()) {
+                    if (n >= 12) break;
+                    net_buf[n * 3 + 0] = e.position[0];
+                    net_buf[n * 3 + 1] = e.position[1];
+                    net_buf[n * 3 + 2] = e.position[2];
+                    ++n;
+                }
+                m_network->update(dt, net_buf, n);
+            } else {
+                m_network->update(dt);
+            }
+        }
         if (std::getenv("RR_TEST_FIRE") && test_fire_frames < 3) {
             ++test_fire_frames;
             m_controller->set_key_state(InputKey::Fire, true);
