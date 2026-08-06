@@ -84,6 +84,20 @@ Game& Game::instance() {
 void Game::update_input(float dt) {
     (void)dt;
     if (!m_controller) return;
+    if (m_menu && m_menu->is_active()) {
+        if (m_controller->wants_fire() || m_controller->wants_next_weapon()) {
+            if (m_menu->get_selected_action() == MenuAction::Quit) {
+                m_running = false;
+                return;
+            }
+        }
+        if (m_controller->wants_prev_weapon()) {
+            m_menu->move_selection(-1);
+        } else if (m_controller->wants_next_weapon()) {
+            m_menu->move_selection(1);
+        }
+        return;
+    }
     if (m_controller->wants_fire()) {
         uint32_t id = m_active_slot == 0 ? m_equipped_main : m_active_slot == 1 ? m_equipped_secondary : m_equipped_space;
         const auto* spec = get_weapon_spec((RealWeaponID)id);

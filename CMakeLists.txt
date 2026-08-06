@@ -65,6 +65,7 @@ target_link_libraries(tehi-campaign PUBLIC tehi-core tehi-audio)
 
 add_library(tehi-multiplayer STATIC
     src/multiplayer/coop.cpp
+    src/multiplayer/network.cpp
 )
 target_include_directories(tehi-multiplayer PRIVATE src)
 target_link_libraries(tehi-multiplayer PRIVATE tehi-core tehi-campaign)
