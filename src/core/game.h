@@ -15,6 +15,7 @@ class SDLGLBackend;
 class AudioScript;
 class SaveSystem;
 class NetworkSystem;
+class Mission;
 class AchievementSystem;
 
 class Game {
@@ -46,6 +47,7 @@ private:
     std::unique_ptr<AudioScript> m_audio_script;
     std::unique_ptr<SaveSystem> m_save;
     std::unique_ptr<NetworkSystem> m_network;
+    std::unique_ptr<Mission> m_mission;
 
     uint32_t m_equipped_main = 3;      // M4A1_CARBINE
     uint32_t m_equipped_secondary = 1;  // M17_9MM

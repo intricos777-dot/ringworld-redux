@@ -11,6 +11,7 @@
 #include "core/achievements.h"
 #include "core/save_system.h"
 #include "core/multiplayer/network.h"
+#include "campaign/mission.h"
 #include "renderer/sdl_gl_backend.h"
 #include "audio/audio_script.h"
 #include <cstdio>
@@ -46,11 +47,13 @@ bool Game::initialize() {
     m_save->initialize();
     m_save->load("savegame.sav");
     m_network = std::make_unique<NetworkSystem>();
-    if (getenv("RR_AUTO_HOST")) {
+    if (getenv("RR_AUTO_HOST") && m_network) {
         uint16_t port = (uint16_t)std::atoi(getenv("RR_AUTO_HOST"));
         if (port == 0) port = 7777;
-        if (m_network) m_network->host(port);
+        m_network->host(port);
     }
+    m_mission = std::make_unique<Mission>();
+    m_mission->initialize("../maps/arc_collapse.json");
     spawn_initial_entities();
     m_controller->set_controller_type(ControllerType::XboxOne);
     std::printf("[Game] Main menu — controller: Xbox One | Fire / Enter to start\n");
@@ -95,6 +98,21 @@ void Game::run() {
                 m_network->update(dt, net_buf, n);
             } else {
                 m_network->update(dt);
+            }
+            if (!m_network->is_host()) {
+                auto pkts = m_network->receive();
+                for (const auto& pkt : pkts) {
+                    if (pkt.type == 1) {
+                        uint32_t count = *(const uint32_t*)pkt.data;
+                        if (count > 12) count = 12;
+                        auto& entities = m_world->get_entities();
+                        for (uint32_t i = 0; i < count && i < entities.size(); ++i) {
+                            entities[i].position[0] = pkt.data[1 + i * 3 + 0];
+                            entities[i].position[1] = pkt.data[1 + i * 3 + 1];
+                            entities[i].position[2] = pkt.data[1 + i * 3 + 2];
+                        }
+                    }
+                }
             }
         }
         if (std::getenv("RR_TEST_FIRE") && test_fire_frames < 3) {
@@ -230,12 +248,8 @@ bool Game::start_join(const std::string& host, uint16_t port) {
 
 void Game::update_campaign(float dt) {
     (void)dt;
-    if (!m_world) return;
-    auto& entities = m_world->get_entities();
-    for (auto& e : entities) {
-        if (!e.active) continue;
-        // Stub entity update; movement/combat applied via input/damage paths.
-    }
+    if (!m_mission) return;
+    m_mission->update(dt);
 }
 
 void Game::render_frame() const {

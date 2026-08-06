@@ -8,7 +8,7 @@ namespace tehi {
 struct NetPacket {
     uint32_t from_client;
     uint32_t type;
-    float data[8];
+    float data[37];
 };
 
 struct ClientEntry {

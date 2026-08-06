@@ -48,7 +48,7 @@ int main() {
     }
 
     tehi::Mission mission;
-    mission.initialize("maps/arc_collapse.json");
+    mission.initialize("../maps/arc_collapse.json");
     mission.save_checkpoint();
     mission.load_checkpoint();
 
