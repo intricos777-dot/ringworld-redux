@@ -35,12 +35,18 @@ struct HiddenSpawn {
     uint32_t count = 0;
 };
 
+struct Waypoint {
+    uint32_t id = 0;
+    float position[3];
+    float radius = 0.0f;
+};
+
 class Mission {
 public:
     Mission() = default;
     ~Mission() = default;
     bool initialize(const std::string& path);
-    bool update(float dt);
+    bool update(float dt, const float* player_position);
     void save_checkpoint();
     bool load_checkpoint();
     void complete_objective(uint32_t id);
@@ -49,6 +55,7 @@ public:
     const std::vector<DialogueLine>& get_dialogue() const { return m_dialogue; }
     const std::vector<EnemyEntry>& get_enemies() const { return m_enemies; }
     const std::vector<HiddenSpawn>& get_hidden_spawns() const { return m_hidden_spawns; }
+    const std::vector<Waypoint>& get_waypoints() const { return m_waypoints; }
     bool is_finale() const { return m_finale; }
 private:
     std::vector<MissionObjective> m_objectives;
@@ -56,6 +63,7 @@ private:
     std::vector<DialogueLine> m_dialogue;
     std::vector<EnemyEntry> m_enemies;
     std::vector<HiddenSpawn> m_hidden_spawns;
+    std::vector<Waypoint> m_waypoints;
     uint32_t m_current_checkpoint = 0;
     bool m_finale = false;
     uint32_t m_last_printed_objective_id = 0;

@@ -249,7 +249,13 @@ bool Game::start_join(const std::string& host, uint16_t port) {
 void Game::update_campaign(float dt) {
     (void)dt;
     if (!m_mission) return;
-    m_mission->update(dt);
+    const char* skip = getenv("RR_CAMPAIGN_SKIP");
+    float player_pos[3] = {5.0f, -10.0f, 2.0f};
+    if (skip && skip[0] == '1') {
+        m_mission->update(dt, nullptr);
+        return;
+    }
+    m_mission->update(dt, player_pos);
 }
 
 void Game::render_frame() const {
