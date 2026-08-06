@@ -9,6 +9,8 @@ class PlayerController;
 class HUD;
 class World;
 class MainMenu;
+class AISquad;
+class Inventory;
 
 class Game {
 public:
@@ -30,6 +32,10 @@ private:
     std::unique_ptr<PlayerController> m_controller;
     std::unique_ptr<HUD> m_hud;
     std::unique_ptr<MainMenu> m_menu;
+    std::unique_ptr<AISquad> m_human_squad;
+    std::unique_ptr<AISquad> m_alien_squad;
+    std::unique_ptr<Inventory> m_human_inventory;
+    std::unique_ptr<Inventory> m_alien_inventory;
 
     uint32_t m_equipped_main = 3;      // M4A1_CARBINE
     uint32_t m_equipped_secondary = 1;  // M17_9MM

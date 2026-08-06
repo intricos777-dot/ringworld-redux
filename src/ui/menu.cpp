@@ -5,10 +5,8 @@ namespace tehi {
 
 bool MainMenu::initialize() {
     m_options.clear();
-    m_options.push_back({1, "New Game", true});
-    m_options.push_back({2, "Load Campaign", false});
-    m_options.push_back({3, "Settings", false});
-    m_options.push_back({4, "Quit", false});
+    m_options.push_back({1, "Casual", true});
+    m_options.push_back({2, "Legend", false});
     m_selected_index = 0;
     m_active = true;
     std::printf("[Menu] Main menu initialized\n");
@@ -44,6 +42,9 @@ void MainMenu::move_selection(int direction) {
 bool MainMenu::confirm_selection() {
     if (m_options.empty()) return false;
     std::printf("[Menu] Selected: %s\n", m_options[m_selected_index].label.c_str());
+    if (m_options[m_selected_index].id == 1) {
+        std::printf("[Menu] Starting new game in Casual mode\n");
+    }
     return true;
 }
 

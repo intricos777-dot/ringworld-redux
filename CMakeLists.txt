@@ -11,6 +11,8 @@ add_library(tehi-core STATIC
     src/core/game.cpp
     src/core/world.cpp
     src/core/game_state.cpp
+    src/core/game_mode.cpp
+    src/core/easter_eggs.cpp
 )
 target_link_libraries(tehi-core PUBLIC te-engine te-renderer te-asset tehi-player tehi-ui)
 target_include_directories(tehi-core PUBLIC include src)

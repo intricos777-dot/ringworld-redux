@@ -3,10 +3,11 @@
 #include "player/controller.h"
 #include "ui/hud.h"
 #include "ui/menu.h"
-#include "ui/menu.h"
 #include "ai/squad.h"
 #include "weapons/weapon_registry.h"
 #include "weapons/inventory.h"
+#include "core/game_mode.h"
+#include "core/easter_eggs.h"
 #include <cstdio>
 #include <chrono>
 #include <thread>
@@ -25,6 +26,8 @@ bool Game::initialize() {
     m_controller->initialize();
     m_hud = std::make_unique<HUD>();
     m_hud->initialize();
+    m_menu = std::make_unique<MainMenu>();
+    m_menu->initialize();
     spawn_initial_entities();
     m_controller->set_controller_type(ControllerType::XboxOne);
     std::printf("[Game] Main menu — controller: Xbox One | Fire / Enter to start\n");
@@ -47,6 +50,7 @@ void Game::run() {
         if (m_world) m_world->update(dt);
         update_input(dt);
         update_campaign(dt);
+        get_easter_egg_system().update(dt);
         render_frame();
     }
 }

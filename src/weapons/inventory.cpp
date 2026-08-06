@@ -11,6 +11,7 @@ bool Inventory::equip(RealWeaponID id) {
 
     Slot target = Slot::Main;
     if (spec->type == (uint32_t)WeaponType::Pistol) target = Slot::Secondary;
+    else if (spec->type == (uint32_t)WeaponType::Grenade) target = Slot::Secondary;
     else if (spec->type == (uint32_t)WeaponType::Energy || spec->type == (uint32_t)WeaponType::Rocket) target = Slot::Space;
 
     auto& slot = m_slots[(uint32_t)target];
