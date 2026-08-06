@@ -57,7 +57,15 @@ public:
     const std::vector<HiddenSpawn>& get_hidden_spawns() const { return m_hidden_spawns; }
     const std::vector<Waypoint>& get_waypoints() const { return m_waypoints; }
     bool is_finale() const { return m_finale; }
+    std::string id() const { return m_id; }
+    std::string name() const { return m_name; }
+    std::string description() const { return m_description; }
+    std::string map() const { return m_map; }
 private:
+    std::string m_id;
+    std::string m_name;
+    std::string m_description;
+    std::string m_map;
     std::vector<MissionObjective> m_objectives;
     std::vector<Checkpoint> m_checkpoints;
     std::vector<DialogueLine> m_dialogue;

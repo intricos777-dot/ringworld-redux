@@ -2,7 +2,7 @@
   "mission_id": "tutorial",
   "name": "First Light",
   "description": "Protagonist awakening and basic movement/combat orientation.",
-  "map": "tutorial.bsp",
+  "map": "maps/signal_lost.json",
   "spawn": {"x": 0.0, "y": 0.0, "z": 0.0},
   "objectives": [
     {"id": 1, "description": "Move through the corridor", "completed": false},

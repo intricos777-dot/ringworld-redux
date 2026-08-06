@@ -1,4 +1,5 @@
 #include "game.h"
+#include "campaign/campaign.h"
 #include "campaign/roster.h"
 #include "campaign/companion.h"
 #include "campaign/mission.h"
@@ -47,10 +48,11 @@ int main() {
         std::printf("[Mode] Legend mode active\n");
     }
 
-    tehi::Mission mission;
-    mission.initialize("../maps/arc_collapse.json");
-    mission.save_checkpoint();
-    mission.load_checkpoint();
+    tehi::Campaign campaign;
+    campaign.initialize();
+    if (!campaign.missions().empty()) {
+        std::printf("[main] Current mission: %s\n", campaign.current()->name.c_str());
+    }
 
     tehi::HUD hud;
     hud.initialize();

@@ -11,6 +11,7 @@ enum class Branch : uint32_t { Marines, Navy, AirForce, Special };
 struct CharacterProfile {
     uint32_t id;
     char callsign[16];
+    char reach_codename[24];
     char full_name[48];
     Branch branch;
     char rank[64];
@@ -27,6 +28,8 @@ public:
     const CharacterProfile* find_by_callsign(const char* callsign) const;
     const CharacterProfile* find_by_id(uint32_t id) const;
     const CharacterProfile* get_protagonist() const;
+    const char* reach_codename(const CharacterProfile& p) const { return p.reach_codename; }
+    const char* reach_codename_by_id(uint32_t id) const;
 private:
     std::vector<CharacterProfile> m_profiles;
     uint32_t m_protagonist_id = 0;

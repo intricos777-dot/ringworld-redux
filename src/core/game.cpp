@@ -13,6 +13,7 @@
 #include "core/multiplayer/network.h"
 #include "campaign/mission.h"
 #include "renderer/sdl_gl_backend.h"
+#include "campaign/campaign.h"
 #include "audio/audio_script.h"
 #include <cstdio>
 #include <cstdlib>
@@ -54,7 +55,11 @@ bool Game::initialize() {
         m_network->host(port);
     }
     m_mission = std::make_unique<Mission>();
-    m_mission->initialize("../maps/arc_collapse.json");
+    tehi::Campaign campaign;
+    campaign.initialize();
+    if (!campaign.missions().empty()) {
+        m_mission->initialize(campaign.current()->map);
+    }
     spawn_initial_entities();
     m_controller->set_controller_type(ControllerType::XboxOne);
     std::printf("[Game] Main menu — controller: Xbox One | Fire / Enter to start\n");

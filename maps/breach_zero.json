@@ -1,31 +1,34 @@
 {
-  "mission_id": "first_contact",
-  "name": "First Contact",
-  "description": "The squad makes first contact with the alien forces. Xal'Thun's raiding party ambushes the advance party. Casualties mount until the player chooses to hold the line or fall back.",
-  "map": "maps/signal_lost.json",
-  "spawn": {"x": 50.0, "y": 0.0, "z": 10.0},
+  "mission_id": "breach_zero",
+  "name": "Breach Zero",
+  "description": "The operative breaches the ringworld's inner hull. Lia detects corrupted military-grade firmware embedded in the access ports. The first human-made weapon cache on the ring is active—and it isn't friendly.",
+  "map": "maps/breach_zero.json",
+  "spawn": {"x": 0.0, "y": -10.0, "z": 0.0},
   "objectives": [
-    {"id": 1, "description": "Hold the line against the alien ambush", "completed": false},
-    {"id": 2, "description": "Rescue the trapped marine element", "completed": false},
-    {"id": 3, "description": "Eliminate the alien commander Xal'Thun", "completed": false},
-    {"id": 4, "description": "Recover the alien data core", "completed": false}
+    {"id": 1, "description": "Disable the hull breach lockdown", "completed": false},
+    {"id": 2, "description": "Secure the weapons cache", "completed": false},
+    {"id": 3, "description": "Survive the firmware counterstrike", "completed": false},
+    {"id": 4, "description": "Extract with the cache data", "completed": false}
   ],
   "waypoints": [
-    {"id": 1, "position": {"x": 55.0, "y": 0.0, "z": 12.0}, "radius": 2.0},
-    {"id": 2, "position": {"x": 65.0, "y": 0.0, "z": 8.0}, "radius": 3.0},
-    {"id": 3, "position": {"x": 75.0, "y": 0.0, "z": 15.0}, "radius": 2.0},
-    {"id": 4, "position": {"x": 85.0, "y": 0.0, "z": 10.0}, "radius": 2.5}
+    {"id": 1, "position": {"x": 8.0, "y": -10.0, "z": 0.0}, "radius": 2.0},
+    {"id": 2, "position": {"x": 20.0, "y": -10.0, "z": 2.0}, "radius": 2.5},
+    {"id": 3, "position": {"x": 32.0, "y": -10.0, "z": -2.0}, "radius": 3.0},
+    {"id": 4, "position": {"x": 45.0, "y": -10.0, "z": 5.0}, "radius": 2.0}
   ],
   "dialogue": [
-    {"trigger": "on_spawn", "speaker": "Lia", "line": "Motion sensors confirm multiple contacts. They're not waiting for us to make the first move."},
-    {"trigger": "objective_1_complete", "speaker": "Reaper", "line": "Line holds. Get the wounded back and push forward."},
-    {"trigger": "objective_2_complete", "speaker": "Spectre", "line": "Trapped element secured. Their commander left something behind—a data core."},
-    {"trigger": "objective_3_complete", "speaker": "Oracle Prime", "line": "Xal'Thun is merely a herald. The real enemy is already inside the ring's foundation."},
-    {"trigger": "objective_4_complete", "speaker": "Lia", "line": "Data core extracted. I'm running a decrypt. If the lore dump is anything like the last one, we're in for a long read."}
+    {"trigger": "on_spawn", "speaker": "Lia", "line": "Hull breach protocols are active. This isn't alien tech—it's human military firmware. Someone prepped this ring for war."},
+    {"trigger": "objective_1_complete", "speaker": "Oracle Prime", "line": "The lockdown was a patch. A clumsy one. The ringworld's builders didn't intend for weapons caches."},
+    {"trigger": "objective_2_complete", "speaker": "Lia", "line": "Cache secured. M16A4s, MA5Cs, and a Spartan laser power cell. This is UNSC-era hardware, but modified."},
+    {"trigger": "objective_3_complete", "speaker": "Oracle Prime", "line": "The firmware retaliated. It learned. Next time it will use the ring's own systems against you."},
+    {"trigger": "objective_4_complete", "speaker": "Lia", "line": "Extraction confirmed. I'm uploading the cache schematics to the Oracle. This changes everything."}
+  ],
+  "easter_eggs": [
+    {"trigger": "ce_release_bug", "name": "CE Release Bug", "description": "Fourth-wall break: the game acknowledges it is a build with known issues."}
   ],
   "enemies": [
-    {"type": "alien_grunt", "count": 5, "position": {"x": 55.0, "y": 0.0, "z": 12.0}},
-    {"type": "seeker_bot", "count": 2, "position": {"x": 65.0, "y": 0.0, "z": 8.0}},
-    {"type": "alien_commander", "count": 1, "position": {"x": 75.0, "y": 0.0, "z": 15.0}}
+    {"type": "alien_grunt", "count": 4, "position": {"x": 10.0, "y": -10.0, "z": 0.0}},
+    {"type": "alien_elite", "count": 2, "position": {"x": 22.0, "y": -10.0, "z": 2.0}},
+    {"type": "seeker_bot", "count": 3, "position": {"x": 34.0, "y": -10.0, "z": -2.0}}
   ]
 }

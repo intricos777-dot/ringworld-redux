@@ -4,6 +4,8 @@ project(ringworld-redux VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(nlohmann_json CONFIG REQUIRED)
+
 add_subdirectory(/home/sin/Projects/twilight-elysium ${CMAKE_BINARY_DIR}/twilight-elysium)
 
 # Core game library
@@ -57,12 +59,13 @@ target_link_libraries(tehi-ai PRIVATE tehi-core)
 
 # Campaign / Co-op
 add_library(tehi-campaign STATIC
+    src/campaign/campaign.cpp
     src/campaign/mission.cpp
     src/campaign/roster.cpp
     src/campaign/companion.cpp
 )
 target_include_directories(tehi-campaign PRIVATE src)
-target_link_libraries(tehi-campaign PUBLIC tehi-core tehi-audio)
+target_link_libraries(tehi-campaign PUBLIC tehi-core tehi-audio nlohmann_json::nlohmann_json)
 
 add_library(tehi-multiplayer STATIC
     src/multiplayer/coop.cpp

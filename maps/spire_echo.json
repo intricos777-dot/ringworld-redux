@@ -1,35 +1,34 @@
 {
-  "mission_id": "tower_of_babel",
-  "name": "Tower of Babel",
-  "description": "The squad reaches the alien command spire. Oracle Echo makes contact, revealing the alien chain of command. Xal'Thun awaits at the apex.",
+  "mission_id": "spire_echo",
+  "name": "Spire Echo",
+  "description": "A monolithic spire pulses with alien broadcast traffic. Inside, the ring's defense AI has been assimilated. The operative must shut down the spire before it summons reinforcements across all 16 maps.",
   "map": "maps/spire_echo.json",
-  "spawn": {"x": 0.0, "y": 0.0, "z": 0.0},
+  "spawn": {"x": 0.0, "y": -10.0, "z": 0.0},
   "objectives": [
-    {"id": 1, "description": "Ascend the tower through the lower decks", "completed": false},
-    {"id": 2, "description": "Disable the alien security grid", "completed": false},
-    {"id": 3, "description": "Confront Oracle Echo", "completed": false},
-    {"id": 4, "description": "Reach the command spire apex", "completed": false},
-    {"id": 5, "description": "Defeat Xal'Thun", "completed": false}
+    {"id": 1, "description": "Infiltrate the Spire's outer ring", "completed": false},
+    {"id": 2, "description": "Disable the broadcast antenna", "completed": false},
+    {"id": 3, "description": "Survive the assimilation wave", "completed": false},
+    {"id": 4, "description": "Destroy the Spire core", "completed": false}
   ],
   "waypoints": [
-    {"id": 1, "position": {"x": 5.0, "y": 0.0, "z": 2.0}, "radius": 2.0},
-    {"id": 2, "position": {"x": 15.0, "y": 5.0, "z": 0.0}, "radius": 3.0},
-    {"id": 3, "position": {"x": 25.0, "y": 10.0, "z": -5.0}, "radius": 2.5},
-    {"id": 4, "position": {"x": 35.0, "y": 15.0, "z": 0.0}, "radius": 2.0},
-    {"id": 5, "position": {"x": 45.0, "y": 20.0, "z": 5.0}, "radius": 3.0}
+    {"id": 1, "position": {"x": 6.0, "y": -10.0, "z": 1.0}, "radius": 2.0},
+    {"id": 2, "position": {"x": 18.0, "y": -10.0, "z": 3.0}, "radius": 2.5},
+    {"id": 3, "position": {"x": 30.0, "y": -10.0, "z": -1.0}, "radius": 3.0},
+    {"id": 4, "position": {"x": 42.0, "y": -10.0, "z": 0.0}, "radius": 2.0}
   ],
   "dialogue": [
-    {"trigger": "on_spawn", "speaker": "Lia", "line": "The tower's energy signature is unlike anything I've scanned. It's almost... alive."},
-    {"trigger": "objective_1_complete", "speaker": "Spectre", "line": "Lower decks clear. Moving to security grid."},
-    {"trigger": "objective_2_complete", "speaker": "Oracle Echo", "line": "You have disabled my guards. Interesting. The ring's protocols are... flexible."},
-    {"trigger": "objective_3_complete", "speaker": "Oracle Echo", "line": "The aliens call this spire 'Babel'. They built it to speak to the ring's core. It is also their weakness."},
-    {"trigger": "objective_4_complete", "speaker": "Oracle Shade", "line": "You climb higher. The protocols grow harsher. I've already adjusted the spawn rates. You're welcome."},
-    {"trigger": "objective_5_complete", "speaker": "Oracle Prime", "line": "Xal'Thun is defeated. But the ring's seal is broken. You must reach the foundation before the cycle completes."}
+    {"trigger": "on_spawn", "speaker": "Lia", "line": "Spire Echo is broadcasting on 47 frequencies. It's calling every alien construct within signal range. We have minutes before the ring lights up like a Christmas tree."},
+    {"trigger": "objective_1_complete", "speaker": "Oracle Prime", "line": "The outer ring is inert. The assimilation wave originates from the core. Do not touch the cables."},
+    {"trigger": "objective_2_complete", "speaker": "Lia", "line": "Antenna offline. The broadcast dropped 34%. But the core is still pulsing."},
+    {"trigger": "objective_3_complete", "speaker": "Oracle Prime", "line": "Assimilation wave neutralized. The spire is blind. Now destroy the core before it reboots."},
+    {"trigger": "objective_4_complete", "speaker": "Lia", "line": "Spire core destroyed. The ring's defense grid is down. We bought the operatives a clean window."}
+  ],
+  "easter_eggs": [
+    {"trigger": "ce_release_bug", "name": "CE Release Bug", "description": "Fourth-wall break: the game acknowledges it is a build with known issues."}
   ],
   "enemies": [
-    {"type": "alien_grunt", "count": 4, "position": {"x": 10.0, "y": 2.0, "z": 5.0}},
-    {"type": "seeker_bot", "count": 3, "position": {"x": 20.0, "y": 7.0, "z": 0.0}},
-    {"type": "sentry_bot", "count": 2, "position": {"x": 30.0, "y": 12.0, "z": -5.0}},
-    {"type": "alien_commander", "count": 1, "position": {"x": 45.0, "y": 20.0, "z": 5.0}}
+    {"type": "alien_elite", "count": 2, "position": {"x": 10.0, "y": -10.0, "z": 1.0}},
+    {"type": "alien_commander", "count": 1, "position": {"x": 22.0, "y": -10.0, "z": 3.0}},
+    {"type": "seeker_bot", "count": 4, "position": {"x": 34.0, "y": -10.0, "z": -1.0}}
   ]
 }
