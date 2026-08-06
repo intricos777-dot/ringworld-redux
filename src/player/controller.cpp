@@ -10,8 +10,6 @@ bool PlayerController::initialize() {
 
 void PlayerController::update(float dt) {
     (void)dt;
-    // In a real implementation, this would read from the input system.
-    // For now, we just expose query methods for the game loop.
 }
 
 void PlayerController::set_position(float x, float y, float z) {
@@ -38,6 +36,11 @@ void PlayerController::set_key_state(InputKey key, bool pressed) {
     if (key == InputKey::Reload) m_reload_pressed = pressed;
     if (key == InputKey::NextWeapon) m_next_pressed = pressed;
     if (key == InputKey::PrevWeapon) m_prev_pressed = pressed;
+}
+
+void PlayerController::set_controller_type(ControllerType type) {
+    m_controller_type = type;
+    std::printf("[Player] Controller type set to %u\n", (uint32_t)type);
 }
 
 } // namespace tehi

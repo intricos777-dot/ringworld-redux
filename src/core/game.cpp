@@ -21,6 +21,7 @@ bool Game::initialize() {
     m_controller->initialize();
     m_hud = std::make_unique<HUD>();
     m_hud->initialize();
+    spawn_initial_entities();
     m_running = true;
     m_initialized = true;
     return true;
@@ -63,16 +64,18 @@ void Game::update_input(float dt) {
     (void)dt;
     if (!m_controller) return;
     if (m_controller->wants_fire()) {
-        std::printf("[Input] Fire pressed\n");
+        uint32_t id = m_active_slot == 0 ? m_equipped_main : m_active_slot == 1 ? m_equipped_secondary : m_equipped_space;
+        const auto* spec = get_weapon_spec((RealWeaponID)id);
+        if (spec) std::printf("[Weapon] Fired %s dmg=%.1f\n", spec->display_name, spec->damage);
     }
     if (m_controller->wants_reload()) {
         std::printf("[Input] Reload pressed\n");
     }
     if (m_controller->wants_next_weapon()) {
-        std::printf("[Input] Next weapon\n");
+        cycle_weapon(1);
     }
     if (m_controller->wants_prev_weapon()) {
-        std::printf("[Input] Prev weapon\n");
+        cycle_weapon(-1);
     }
 }
 
@@ -96,7 +99,15 @@ void Game::draw_hud() const {
 void Game::apply_loadout() {
     std::printf("[Game] Applying loadout: main=%u secondary=%u space=%u\n",
         m_equipped_main, m_equipped_secondary, m_equipped_space);
-    // TODO: spawn pickup entities for each slot
+}
+
+void Game::spawn_initial_entities() {
+    if (!m_world) return;
+    m_world->spawn_entity(1, 0.0f, 0.0f, 0.0f);
+    m_world->spawn_entity(2, 2.0f, 0.0f, 5.0f);
+    m_world->spawn_entity(3, -2.0f, 0.0f, 5.0f);
+    m_world->spawn_entity(4, 10.0f, 0.0f, 0.0f);
+    std::printf("[Game] Initial entities spawned\n");
 }
 
 void Game::cycle_weapon(int direction) {

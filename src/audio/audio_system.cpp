@@ -20,7 +20,6 @@ bool AudioEngine::initialize() {
 
 void AudioEngine::shutdown() {
     g_music.shutdown();
-    g_transitions.~TransitionSystem();
     std::printf("[Audio] Engine shutdown\n");
 }
 

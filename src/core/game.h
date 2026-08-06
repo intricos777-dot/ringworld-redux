@@ -39,6 +39,7 @@ private:
     void draw_hud() const;
     void apply_loadout();
     void cycle_weapon(int direction);
+    void spawn_initial_entities();
 };
 
 } // namespace tehi
