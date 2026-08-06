@@ -71,6 +71,14 @@ void Game::run() {
         float dt = 1.0f / 60.0f;
         if (m_world) m_world->update(dt);
         if (m_network) m_network->update(dt);
+        if (!m_test_fire_ran && std::getenv("RR_TEST_FIRE")) {
+            m_test_fire_ran = true;
+            if (m_world && !m_world->get_entities().empty()) {
+                const auto& e = m_world->get_entities().front();
+                std::printf("[Test] RR_TEST_FIRE -> apply_weapon_damage toward entity %u at (%.1f,%.1f,%.1f)\n", e.id, e.position[0], e.position[1], e.position[2]);
+                apply_weapon_damage(e.position[0], e.position[1], e.position[2], 2.0f, 10.0f);
+            }
+        }
         update_input(dt);
         update_campaign(dt);
         get_easter_egg_system().update(dt);
@@ -96,6 +104,15 @@ Game& Game::instance() {
 void Game::update_input(float dt) {
     (void)dt;
     if (!m_controller) return;
+    static bool test_fired = false;
+    if (!test_fired && std::getenv("RR_TEST_FIRE")) {
+        test_fired = true;
+        if (m_world && !m_world->get_entities().empty()) {
+            const auto& e = m_world->get_entities().front();
+            std::printf("[Test] RR_TEST_FIRE -> apply_weapon_damage toward entity %u\n", e.id);
+            apply_weapon_damage(e.position[0], e.position[1], e.position[2], 2.0f, 10.0f);
+        }
+    }
     if (m_menu && m_menu->is_active()) {
         if (m_controller->wants_fire() || m_controller->wants_next_weapon()) {
             switch (m_menu->get_selected_action()) {
@@ -216,13 +233,13 @@ void Game::apply_weapon_damage(float x, float y, float z, float radius, float da
     auto& entities = m_world->get_entities();
     bool hit = false;
     for (auto& e : entities) {
-        if (!e.active || e.type == 1) continue;
+        if (!e.active) continue;
         float dx = e.position[0] - x;
         float dy = e.position[1] - y;
         float dz = e.position[2] - z;
         float dist = dx*dx + dy*dy + dz*dz;
         if (dist <= radius * radius) {
-            std::printf("[Weapon] Hit entity %u at dist %.2f dmg=%.1f\n", e.id, dist, damage);
+            m_world->damage_entity(e.id, damage);
             hit = true;
         }
     }

@@ -9,6 +9,10 @@
 #include <cstdio>
 
 int main() {
+    const char* test_fire = std::getenv("RR_TEST_FIRE");
+    if (test_fire) {
+        std::printf("[main] RR_TEST_FIRE=%s\n", test_fire);
+    }
     tehi::Game& game = tehi::Game::instance();
     if (!game.initialize()) {
         std::fprintf(stderr, "Failed to initialize game\n");

@@ -32,6 +32,7 @@ public:
 private:
     bool m_running = false;
     mutable bool m_should_close = false;
+    bool m_test_fire_ran = false;
     bool m_initialized = false;
     bool m_main_menu = true;
     std::unique_ptr<World> m_world;
