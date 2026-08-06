@@ -1,0 +1,20 @@
+{
+  "mission_id": "battle_creek",
+  "name": "Battle Creek",
+  "description": "Tightly wound creek-bed fighting with cave networks and exposed ridges.",
+  "map": "maps/creek_assault.json",
+  "spawn": {"x": 0.0, "y": 0.0, "z": 0.0},
+  "objectives": [{"id": 1, "description": "Clear the creek", "completed": false}],
+  "waypoints": [{"id": 1, "position": {"x": 5.0, "y": 0.0, "z": 2.0}, "radius": 2.0}],
+  "dialogue": [],
+  "easter_eggs": [],
+  "enemies": [
+    {"type": "alien_grunt", "count": 3, "position": {"x": 8.0, "y": 0.0, "z": 2.0}},
+    {"type": "alien_elite", "count": 1, "position": {"x": 20.0, "y": 0.0, "z": 0.0}}
+  ],
+  "weapon_spawns": [
+    {"weapon": "M4A1_CARBINE", "position": {"x": 1.0, "y": 0.0, "z": 1.0}},
+    {"weapon": "M1014", "position": {"x": 12.0, "y": 0.0, "z": 2.0}},
+    {"weapon": "M67_GRENADE", "position": {"x": 6.0, "y": 0.0, "z": 1.0}}
+  ]
+}

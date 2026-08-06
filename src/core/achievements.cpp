@@ -15,6 +15,11 @@ bool AchievementSystem::initialize() {
     return true;
 }
 
+AchievementSystem& AchievementSystem::instance() {
+    static AchievementSystem instance;
+    return instance;
+}
+
 void AchievementSystem::unlock(Achievement id) {
     for (auto& r : m_records) {
         if (r.id == id && !r.unlocked) {

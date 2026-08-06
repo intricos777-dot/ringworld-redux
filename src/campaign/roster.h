@@ -13,9 +13,9 @@ struct CharacterProfile {
     char callsign[16];
     char full_name[48];
     Branch branch;
-    char rank[24];
+    char rank[64];
     char role[32];
-    char backstory[256];
+    char backstory[512];
     bool is_protagonist = false;
 };
 

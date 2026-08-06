@@ -2,7 +2,7 @@
   "mission_id": "first_contact",
   "name": "First Contact",
   "description": "The squad makes first contact with the alien forces. Xal'Thun's raiding party ambushes the advance party. Casualties mount until the player chooses to hold the line or fall back.",
-  "map": "maps/awakening.json",
+  "map": "maps/signal_lost.json",
   "spawn": {"x": 50.0, "y": 0.0, "z": 10.0},
   "objectives": [
     {"id": 1, "description": "Hold the line against the alien ambush", "completed": false},

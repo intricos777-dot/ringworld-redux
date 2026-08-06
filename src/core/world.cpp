@@ -1,15 +1,30 @@
 #include "world.h"
+#include "core/alien_panic.h"
 #include <cstdio>
 
 namespace tehi {
 
+World::World() = default;
+World::~World() = default;
+
 bool World::initialize() {
-    std::printf("[World] Initialized with 0 entities\n");
+    m_alien_panic.initialize();
+    std::printf("[World] Initialized with panic system\n");
     return true;
 }
 
+void World::register_alien(uint32_t entity_id, uint32_t team, uint32_t rank, uint32_t squad_id) {
+    m_alien_panic.add_alien(entity_id,
+        rank == 2 ? AIAlienRank::Elite : AIAlienRank::Grunt,
+        squad_id);
+}
+
+void World::notify_elite_killed(uint32_t entity_id, uint32_t squad_id) {
+    m_alien_panic.notify_elite_killed(squad_id);
+}
+
 void World::update(float dt) {
-    (void)dt;
+    m_alien_panic.update(dt);
     for (auto& e : m_entities) {
         if (!e.active) continue;
         // stub update
@@ -47,6 +62,9 @@ void World::damage_entity(uint32_t entity_id, float amount) {
                 e.health = 0.0f;
                 e.active = false;
                 std::printf("[World] Entity %u destroyed\n", entity_id);
+                if (e.type == 1) {
+                    notify_elite_killed(entity_id, 0);
+                }
             } else {
                 std::printf("[World] Entity %u took %.1f damage -> hp=%.1f shield=%.1f\n",
                     entity_id, amount, e.health, e.shield);
@@ -55,6 +73,16 @@ void World::damage_entity(uint32_t entity_id, float amount) {
         }
     }
     std::printf("[World] Entity %u not found\n", entity_id);
+}
+
+void World::heal_entity(uint32_t entity_id, float amount) {
+    for (auto& e : m_entities) {
+        if (e.id == entity_id && e.active) {
+            e.health += amount;
+            if (e.health > 120.0f) e.health = 120.0f;
+            return;
+        }
+    }
 }
 
 } // namespace tehi

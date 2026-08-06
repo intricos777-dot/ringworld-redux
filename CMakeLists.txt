@@ -10,10 +10,12 @@ add_subdirectory(/home/sin/Projects/twilight-elysium ${CMAKE_BINARY_DIR}/twiligh
 add_library(tehi-core STATIC
     src/core/game.cpp
     src/core/world.cpp
+    src/core/alien_panic.cpp
     src/core/game_state.cpp
     src/core/game_mode.cpp
     src/core/easter_eggs.cpp
     src/core/achievements.cpp
+    src/core/level_modifier.cpp
     src/renderer/render_bridge.cpp
     src/audio/audio_script.cpp
 )
@@ -46,6 +48,8 @@ add_library(tehi-ai STATIC
     src/ai/navmesh.cpp
     src/ai/enemy.cpp
     src/ai/squad.cpp
+    src/ai/guest_ai.cpp
+    src/ai/boss_alien.cpp
 )
 target_link_libraries(tehi-ai PRIVATE tehi-core)
 

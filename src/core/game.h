@@ -13,6 +13,7 @@ class AISquad;
 class Inventory;
 class RenderBridge;
 class AudioScript;
+class AchievementSystem;
 
 class Game {
 public:

@@ -2,7 +2,7 @@
   "mission_id": "foundation",
   "name": "Foundation",
   "description": "The operative reaches the ringworld's foundation. Oracle Prime reveals the final truth: the ring was built to contain something worse than the aliens. The player must choose: reset the seal, or destroy the ring entirely.",
-  "map": "maps/foundation.json",
+  "map": "maps/deep_field.json",
   "spawn": {"x": 0.0, "y": 0.0, "z": 0.0},
   "objectives": [
     {"id": 1, "description": "Descend into the foundation chambers", "completed": false},

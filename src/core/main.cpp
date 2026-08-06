@@ -4,6 +4,8 @@
 #include "campaign/mission.h"
 #include "audio/audio_system.h"
 #include "ui/hud.h"
+#include "core/achievements.h"
+#include "core/game_mode.h"
 #include <cstdio>
 
 int main() {
@@ -33,8 +35,16 @@ int main() {
         music.play_track(music.playlist()[0].id);
     }
 
+    tehi::AchievementSystem& achievements = tehi::AchievementSystem::instance();
+    achievements.initialize();
+
+    tehi::get_game_mode_system().set_mode(tehi::GameMode::Casual);
+    if (tehi::get_game_mode_system().is_legend()) {
+        std::printf("[Mode] Legend mode active\n");
+    }
+
     tehi::Mission mission;
-    mission.initialize("maps/awakening.json");
+    mission.initialize("maps/arc_collapse.json");
     mission.save_checkpoint();
     mission.load_checkpoint();
 

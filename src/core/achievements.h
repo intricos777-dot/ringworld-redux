@@ -24,14 +24,17 @@ struct AchievementRecord {
 
 class AchievementSystem {
 public:
-    AchievementSystem() = default;
-    ~AchievementSystem() = default;
+    static AchievementSystem& instance();
+    AchievementSystem(const AchievementSystem&) = delete;
+    AchievementSystem& operator=(const AchievementSystem&) = delete;
     bool initialize();
     void unlock(Achievement id);
     bool is_unlocked(Achievement id) const;
     const std::vector<AchievementRecord>& records() const { return m_records; }
     void update_enemy_count(uint32_t active_enemies);
 private:
+    AchievementSystem() = default;
+    ~AchievementSystem() = default;
     std::vector<AchievementRecord> m_records;
     uint32_t m_active_enemies = 0;
 };

@@ -2,7 +2,7 @@
   "mission_id": "tower_of_babel",
   "name": "Tower of Babel",
   "description": "The squad reaches the alien command spire. Oracle Echo makes contact, revealing the alien chain of command. Xal'Thun awaits at the apex.",
-  "map": "maps/tower_of_babel.json",
+  "map": "maps/spire_echo.json",
   "spawn": {"x": 0.0, "y": 0.0, "z": 0.0},
   "objectives": [
     {"id": 1, "description": "Ascend the tower through the lower decks", "completed": false},

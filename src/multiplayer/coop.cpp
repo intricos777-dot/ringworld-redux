@@ -1,11 +1,19 @@
 #include "coop.h"
 #include <cstdio>
+#include <algorithm>
 
 namespace tehi {
 
-bool CoopSession::host(const std::string& mission_path) {
+CoopSession::CoopSession() = default;
+CoopSession::~CoopSession() = default;
+
+bool CoopSession::host(const std::string& mission_path, SessionMode mode) {
     m_host = true;
-    std::printf("[Coop] Hosting mission: %s\n", mission_path.c_str());
+    m_mode = mode;
+    std::printf("[Coop] Hosting %s | mode=%s | max=%u\n",
+        mission_path.c_str(),
+        mode == SessionMode::LocalServer ? "local server" : "peer-to-peer",
+        m_max_players);
     add_player("Player1");
     return true;
 }
@@ -18,7 +26,7 @@ bool CoopSession::join(const std::string& address) {
 
 void CoopSession::add_player(const std::string& name) {
     if (m_players.size() >= m_max_players) {
-        std::printf("[Coop] Session full\n");
+        std::printf("[Coop] Session full (%u/%u)\n", (uint32_t)m_players.size(), m_max_players);
         return;
     }
     PlayerSlot slot;
@@ -38,6 +46,18 @@ void CoopSession::remove_player(uint32_t slot) {
             return;
         }
     }
+}
+
+std::vector<ServerEntry> CoopSession::discover_local_servers() const {
+    std::vector<ServerEntry> entries;
+    ServerEntry e;
+    e.name = "LocalHost";
+    e.address = "127.0.0.1";
+    e.players = (uint32_t)m_players.size();
+    e.max_players = m_max_players;
+    e.mode = SessionMode::LocalServer;
+    entries.push_back(e);
+    return entries;
 }
 
 } // namespace tehi

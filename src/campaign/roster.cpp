@@ -6,8 +6,8 @@ namespace tehi {
 
 static const CharacterProfile PROFILES[] = {
     // Protagonist
-    {0, "Living_Sin", "Unknown", Branch::Special, "Cybernostic", "Operative",
-     "A humanoid A.I. construct housed in a black and green Mjolnir-derived armor system. Purpose and past are fragmented; searches for meaning across war-torn worlds.", true},
+    {0, "Living_Sin", "Unknown", Branch::Special, "Master Chief Petty Officer", "Operative",
+     "A humanoid A.I. construct housed in a black and green Mjolnir-derived armor system. Purpose and past are fragmented; searches for meaning across war-torn worlds. The armor bears the rank insignia of a Master Chief Petty Officer of the Navy, though few remember what that rank actually means.", true},
     // Marines - infantry, breachers, heavy weapons
     {1, "Reaper", "Cole Vasquez", Branch::Marines, "Staff Sergeant", "Infantry Lead",
      "Led a four-man squad through fortified urban terrain, holding a key crossroads for 18 hours against repeated armored probes."},

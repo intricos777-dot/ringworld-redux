@@ -2,7 +2,7 @@
   "mission_id": "awakening",
   "name": "Awakening",
   "description": "The operative awakens on the ringworld surface. Lia detects a construct signature. Something feels familiar, like a corrupted save file from a previous run.",
-  "map": "maps/awakening.json",
+  "map": "maps/signal_lost.json",
   "spawn": {"x": 0.0, "y": 0.0, "z": 0.0},
   "objectives": [
     {"id": 1, "description": "Follow Lia's guidance to the Oracle Prime", "completed": false},

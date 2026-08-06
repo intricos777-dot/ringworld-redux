@@ -8,6 +8,7 @@
 #include "weapons/inventory.h"
 #include "core/game_mode.h"
 #include "core/easter_eggs.h"
+#include "core/achievements.h"
 #include "renderer/render_bridge.h"
 #include "audio/audio_script.h"
 #include <cstdio>
@@ -33,7 +34,8 @@ bool Game::initialize() {
     m_renderer = std::make_unique<RenderBridge>();
     m_renderer->initialize(nullptr);
     m_audio_script = std::make_unique<AudioScript>();
-    m_audio_script->load("maps/awakening.json");
+    m_audio_script->load("maps/signal_lost.json");
+    AchievementSystem::instance().initialize();
     spawn_initial_entities();
     m_controller->set_controller_type(ControllerType::XboxOne);
     std::printf("[Game] Main menu — controller: Xbox One | Fire / Enter to start\n");
@@ -129,10 +131,17 @@ void Game::apply_loadout() {
 
 void Game::spawn_initial_entities() {
     if (!m_world) return;
+    // squad 1 = player
+    // squad 2 = aliens
     m_world->spawn_entity(1, 0.0f, 0.0f, 0.0f);
     m_world->spawn_entity(2, 2.0f, 0.0f, 5.0f);
     m_world->spawn_entity(3, -2.0f, 0.0f, 5.0f);
     m_world->spawn_entity(4, 10.0f, 0.0f, 0.0f);
+
+    // Register aliens for panic tracking
+    m_world->register_alien(2, 2, 1, 2); // grunt
+    m_world->register_alien(3, 2, 1, 2); // grunt
+    m_world->register_alien(4, 2, 2, 2); // elite
     std::printf("[Game] Initial entities spawned\n");
 }
 
