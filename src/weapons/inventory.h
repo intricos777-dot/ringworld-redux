@@ -1,8 +1,17 @@
 #pragma once
-#include <vector>
 #include <cstdint>
+#include <string>
+#include <array>
+#include "weapon_registry.h"
 
 namespace tehi {
+
+enum class Slot : uint32_t {
+    Main = 0,
+    Secondary,
+    Space,
+    COUNT
+};
 
 struct InventorySlot {
     uint32_t weapon_id = 0;
@@ -13,12 +22,15 @@ class Inventory {
 public:
     Inventory() = default;
     ~Inventory() = default;
-    bool add_weapon(uint32_t weapon_id, uint32_t ammo);
-    bool remove_weapon(uint32_t weapon_id);
-    const InventorySlot* get_slot(uint32_t index) const;
-    size_t size() const { return m_slots.size(); }
+
+    bool equip(RealWeaponID id);
+    bool unequip(Slot slot);
+    const InventorySlot* get_slot(Slot slot) const { return &m_slots[(uint32_t)slot]; }
+    InventorySlot* get_slot(Slot slot) { return &m_slots[(uint32_t)slot]; }
+    void update(float dt);
+
 private:
-    std::vector<InventorySlot> m_slots;
+    std::array<InventorySlot, (uint32_t)Slot::COUNT> m_slots{};
 };
 
 } // namespace tehi
