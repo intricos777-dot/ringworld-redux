@@ -20,6 +20,8 @@ bool Game::initialize() {
 void Game::run() {
     while (m_running) {
         // game loop stub
+        std::printf("[Game] Running...\n");
+        break;
     }
 }
 
