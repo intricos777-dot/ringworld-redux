@@ -21,6 +21,8 @@ private:
     bool m_running = false;
     bool m_initialized = false;
     std::unique_ptr<World> m_world;
+    void update_campaign(float dt);
+    void render_frame() const;
 };
 
 } // namespace tehi
