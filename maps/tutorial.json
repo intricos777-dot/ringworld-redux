@@ -1,0 +1,26 @@
+{
+  "mission_id": "tutorial",
+  "name": "First Light",
+  "description": "Protagonist awakening and basic movement/combat orientation.",
+  "map": "tutorial.bsp",
+  "spawn": {"x": 0.0, "y": 0.0, "z": 0.0},
+  "objectives": [
+    {"id": 1, "description": "Move through the corridor", "completed": false},
+    {"id": 2, "description": "Equip the sidearm", "completed": false},
+    {"id": 3, "description": "Neutralize the target drone", "completed": false},
+    {"id": 4, "description": "Reach the extraction point", "completed": false}
+  ],
+  "waypoints": [
+    {"id": 1, "position": {"x": 10.0, "y": 0.0, "z": 0.0}, "radius": 1.5},
+    {"id": 2, "position": {"x": 25.0, "y": 0.0, "z": 0.0}, "radius": 1.5},
+    {"id": 3, "position": {"x": 40.0, "y": 2.0, "z": 0.0}, "radius": 2.0},
+    {"id": 4, "position": {"x": 60.0, "y": 0.0, "z": 0.0}, "radius": 2.0}
+  ],
+  "dialogue": [
+    {"trigger": "on_spawn", "speaker": "Lia", "line": "Systems online. I am with you. Let us move forward."},
+    {"trigger": "objective_1_complete", "speaker": "Lia", "line": "Corridor clear. Watch for motion sensors."},
+    {"trigger": "objective_2_complete", "speaker": "Lia", "line": "Sidearm armed. Aim center-mass."},
+    {"trigger": "objective_3_complete", "speaker": "Lia", "line": "Target destroyed. Extraction is ahead."},
+    {"trigger": "objective_4_complete", "speaker": "Lia", "line": "Extraction reached. Well done."}
+  ]
+}
