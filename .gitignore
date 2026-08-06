@@ -5,3 +5,6 @@ __pycache__/
 *.a
 .vscode/
 .idea/
+build/
+build-bak/
+
