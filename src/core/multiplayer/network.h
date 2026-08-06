@@ -68,6 +68,7 @@ struct Peer {
     uint64_t sent_packets = 0;
     uint64_t acked_packets = 0;
     uint64_t retrans_packets = 0;
+    uint32_t consecutive_failed_sends = 0;
 };
 
 struct RelayEntry {
@@ -108,6 +109,7 @@ private:
     std::vector<RelayEntry> m_relays;
     std::deque<std::pair<float, uint64_t>> m_loss_samples;
     std::deque<std::pair<NetPacket, uint64_t>> m_interp_buf;
+    ClientEntry m_tcp_pending{};
     float m_interp_alpha = 0.2f;
     uint32_t m_budget_bps = 4096;
     uint64_t m_last_state_send_ms = 0;
@@ -128,6 +130,7 @@ private:
     NetPacket make_interp_packet() const;
     void process_ack(Peer& p, uint16_t ack_seq, uint16_t ack_bits);
     static bool addr_equal(const sockaddr_in& a, const sockaddr_in& b);
+    void drop_peer(Peer& p);
 };
 
 } // namespace tehi

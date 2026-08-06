@@ -15,11 +15,16 @@ public:
     void end_frame();
     void present();
     bool poll_events(PlayerController* controller);
+    bool should_close() const { return m_should_close; }
     void* native_window();
 private:
     bool m_initialized = false;
     SDL_Window* m_window = nullptr;
     SDL_GLContext m_ctx = nullptr;
+    bool m_polled_events = false;
+    bool m_should_close = false;
+    int m_width = 0;
+    int m_height = 0;
 };
 
 } // namespace tehi

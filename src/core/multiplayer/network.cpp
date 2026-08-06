@@ -115,6 +115,8 @@ bool NetworkSystem::join(const std::string& host, uint16_t port) {
 
     int tcp = ::socket(AF_INET, SOCK_STREAM, 0);
     if (tcp >= 0) {
+        int fl = fcntl(tcp, F_GETFL, 0);
+        fcntl(tcp, F_SETFL, fl | O_NONBLOCK);
         sockaddr_in dest{};
         dest.sin_family = AF_INET;
         dest.sin_port = htons(port + 1);
@@ -135,8 +137,15 @@ bool NetworkSystem::join(const std::string& host, uint16_t port) {
                 peer.have_addr = true;
                 peer.last_token_time = steady_seconds();
                 m_peers.push_back(peer);
+                std::printf("[Network] TCP connected to host\n");
             } else {
-                ::close(tcp);
+                ClientEntry c;
+                c.id = 2;
+                c.ip = ntohl(dest.sin_addr.s_addr);
+                c.port = port;
+                c.tcp_socket = tcp;
+                m_tcp_pending = c;
+                std::printf("[Network] TCP connect pending for %s:%u\n", host.c_str(), port);
             }
         } else {
             ::close(tcp);
@@ -149,6 +158,27 @@ bool NetworkSystem::join(const std::string& host, uint16_t port) {
     dest.sin_port = htons(port);
     inet_pton(AF_INET, host.c_str(), &dest.sin_addr);
     sendto(m_socket, hello, 5, 0, (sockaddr*)&dest, sizeof(dest));
+
+    if (m_tcp_pending.tcp_socket >= 0) {
+        fd_set wf;
+        FD_ZERO(&wf);
+        FD_SET(m_tcp_pending.tcp_socket, &wf);
+        timeval tv{0, 0};
+        if (select(m_tcp_pending.tcp_socket + 1, nullptr, &wf, nullptr, &tv) > 0) {
+            int err = 0; socklen_t len = sizeof(err);
+            if (getsockopt(m_tcp_pending.tcp_socket, SOL_SOCKET, SO_ERROR, &err, &len) == 0 && err == 0) {
+                m_clients.push_back(m_tcp_pending);
+                Peer peer;
+                peer.id = 1;
+                peer.addr = dest;
+                peer.have_addr = true;
+                peer.last_token_time = steady_seconds();
+                m_peers.push_back(peer);
+                std::printf("[Network] TCP connect completed\n");
+            }
+            m_tcp_pending = ClientEntry{};
+        }
+    }
 
     std::printf("[Network] Joined %s:%u\n", host.c_str(), port);
     return true;
@@ -235,13 +265,18 @@ void NetworkSystem::update(float dt, const float* entity_positions, uint32_t ent
             uint16_t pseq = (uint16_t)((uint16_t)it->at(4) | ((uint16_t)it->at(5) << 8));
             auto st_it = p.send_times.find(pseq);
             if (st_it == p.send_times.end()) { it = p.pending.erase(it); continue; }
-            if (now - st_it->second > 200) {
+            if (now - st_it->second > 400) {
                 sendto(m_socket, it->data(), it->size(), 0, (sockaddr*)&p.addr, sizeof(p.addr));
                 st_it->second = now;
                 p.retrans_packets++;
+                p.consecutive_failed_sends = 0;
             }
             ++it;
         }
+    }
+    for (auto it = m_peers.begin(); it != m_peers.end();) {
+        if (it->consecutive_failed_sends > 20) it = m_peers.erase(it);
+        else ++it;
     }
 }
 
@@ -447,6 +482,10 @@ bool NetworkSystem::send_frame(Peer& p, const uint8_t* payload, uint16_t payload
     }
 
     sendto(m_socket, buf, o, 0, (sockaddr*)&p.addr, sizeof(p.addr));
+    if (errno == EWOULDBLOCK || errno == ECONNREFUSED) {
+        p.consecutive_failed_sends++;
+        if (p.consecutive_failed_sends > 20) std::printf("[Network] Peer %u send failures, will drop\n", p.id);
+    }
     p.sent_packets++;
     p.send_times[seq] = now_ms();
 

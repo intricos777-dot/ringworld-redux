@@ -33,6 +33,8 @@ bool SDLGLBackend::initialize(int width, int height, const char* title) {
         return false;
     }
     SDL_GL_SetSwapInterval(1);
+    m_width = width;
+    m_height = height;
     glViewport(0, 0, width, height);
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -77,11 +79,12 @@ void SDLGLBackend::present() {
 }
 
 bool SDLGLBackend::poll_events(PlayerController* controller) {
+    m_polled_events = true;
+    m_should_close = false;
     SDL_Event ev;
-    bool close = false;
     while (SDL_PollEvent(&ev)) {
         if (ev.type == SDL_QUIT) {
-            close = true;
+            m_should_close = true;
         }
         if (!controller) continue;
         if (ev.type == SDL_KEYDOWN) {
@@ -118,9 +121,16 @@ bool SDLGLBackend::poll_events(PlayerController* controller) {
                 case SDLK_ESCAPE: controller->set_key_state(InputKey::Escape, false); break;
                 default: break;
             }
+        } else if (ev.type == SDL_WINDOWEVENT) {
+            if (ev.window.event == SDL_WINDOWEVENT_SIZE_CHANGED ||
+                ev.window.event == SDL_WINDOWEVENT_RESIZED) {
+                m_width = ev.window.data1;
+                m_height = ev.window.data2;
+                glViewport(0, 0, m_width, m_height);
+            }
         }
     }
-    return close;
+    return m_should_close;
 }
 
 void* SDLGLBackend::native_window() {

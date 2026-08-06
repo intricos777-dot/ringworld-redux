@@ -16,6 +16,7 @@
 #include "audio/audio_script.h"
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <chrono>
 #include <thread>
 #include <cmath>
@@ -79,8 +80,8 @@ void Game::run() {
     }
     int test_fire_frames = 0;
     while (m_running && !m_should_close) {
+        if (next_tick < clock::now()) next_tick = clock::now();
         std::this_thread::sleep_until(next_tick);
-        next_tick += tick_duration;
 
         float dt = 1.0f / 60.0f;
         if (m_world) m_world->update(dt);
@@ -103,7 +104,8 @@ void Game::run() {
                 auto pkts = m_network->receive();
                 for (const auto& pkt : pkts) {
                     if (pkt.type == 1) {
-                        uint32_t count = *(const uint32_t*)pkt.data;
+                        uint64_t count = 0;
+                        std::memcpy(&count, pkt.data, sizeof(count));
                         if (count > 12) count = 12;
                         auto& entities = m_world->get_entities();
                         for (uint32_t i = 0; i < count && i < entities.size(); ++i) {
@@ -126,7 +128,10 @@ void Game::run() {
             m_controller->set_key_state(InputKey::Reload, false);
         }
         bool close = false;
-        if (m_renderer) close = m_renderer->poll_events(m_controller.get());
+        if (m_renderer) {
+            m_renderer->poll_events(m_controller.get());
+            close = m_renderer->should_close();
+        }
         if (close) { m_running = false; break; }
         update_input(dt);
         update_campaign(dt);
