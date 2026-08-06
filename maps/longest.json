@@ -1,0 +1,51 @@
+{
+  "mission_id": "longest",
+  "name": "Longest",
+  "description": "Extremely long open corridor with exposed flanks and mid-range firefights.",
+  "map": "maps/longest.json",
+  "spawn": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "objectives": [
+    {
+      "id": 1,
+      "description": "Capture the flag or eliminate all hostiles",
+      "completed": false
+    }
+  ],
+  "waypoints": [
+    {
+      "id": 1,
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 10
+      },
+      "radius": 4.0
+    }
+  ],
+  "dialogue": [],
+  "easter_eggs": [],
+  "enemies": [
+    {
+      "type": "alien_elite",
+      "count": 3,
+      "position": {
+        "x": 50,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "type": "alien_grunt",
+      "count": 4,
+      "position": {
+        "x": 70,
+        "y": 0,
+        "z": 5
+      }
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "mission_id": "prisoner",
+  "name": "Prisoner",
+  "description": "Isolated island with a central prison structure. Long-range sniper duels across water.",
+  "map": "maps/prisoner.json",
+  "spawn": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "objectives": [
+    {
+      "id": 1,
+      "description": "Capture the flag or eliminate all hostiles",
+      "completed": false
+    }
+  ],
+  "waypoints": [
+    {
+      "id": 1,
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 10
+      },
+      "radius": 4.0
+    }
+  ],
+  "dialogue": [],
+  "easter_eggs": [],
+  "enemies": [
+    {
+      "type": "alien_elite",
+      "count": 3,
+      "position": {
+        "x": 50,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "type": "seeker_bot",
+      "count": 4,
+      "position": {
+        "x": 60,
+        "y": 0,
+        "z": 10
+      }
+    }
+  ]
+}

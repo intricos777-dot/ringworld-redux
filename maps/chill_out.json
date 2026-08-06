@@ -1,0 +1,51 @@
+{
+  "mission_id": "chill_out",
+  "name": "Chill Out",
+  "description": "Ice cavern interior with slippery surfaces and limited visibility.",
+  "map": "maps/chill_out.json",
+  "spawn": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "objectives": [
+    {
+      "id": 1,
+      "description": "Capture the flag or eliminate all hostiles",
+      "completed": false
+    }
+  ],
+  "waypoints": [
+    {
+      "id": 1,
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 10
+      },
+      "radius": 4.0
+    }
+  ],
+  "dialogue": [],
+  "easter_eggs": [],
+  "enemies": [
+    {
+      "type": "alien_grunt",
+      "count": 5,
+      "position": {
+        "x": 12,
+        "y": 0,
+        "z": 8
+      }
+    },
+    {
+      "type": "seeker_bot",
+      "count": 2,
+      "position": {
+        "x": 24,
+        "y": 0,
+        "z": 4
+      }
+    }
+  ]
+}

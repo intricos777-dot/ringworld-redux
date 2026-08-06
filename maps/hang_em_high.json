@@ -1,0 +1,51 @@
+{
+  "mission_id": "hang_em_high",
+  "name": "Hang Em High",
+  "description": "High-altitude plateau with exposed ledges and deadly drops.",
+  "map": "maps/hang_em_high.json",
+  "spawn": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "objectives": [
+    {
+      "id": 1,
+      "description": "Capture the flag or eliminate all hostiles",
+      "completed": false
+    }
+  ],
+  "waypoints": [
+    {
+      "id": 1,
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 10
+      },
+      "radius": 4.0
+    }
+  ],
+  "dialogue": [],
+  "easter_eggs": [],
+  "enemies": [
+    {
+      "type": "alien_grunt",
+      "count": 4,
+      "position": {
+        "x": 5,
+        "y": 10,
+        "z": 5
+      }
+    },
+    {
+      "type": "alien_commander",
+      "count": 1,
+      "position": {
+        "x": 25,
+        "y": 10,
+        "z": 0
+      }
+    }
+  ]
+}

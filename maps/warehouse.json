@@ -1,0 +1,51 @@
+{
+  "mission_id": "warehouse",
+  "name": "Warehouse",
+  "description": "Massive industrial warehouse with catwalks, cargo stacks, and forklifts.",
+  "map": "maps/warehouse.json",
+  "spawn": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "objectives": [
+    {
+      "id": 1,
+      "description": "Capture the flag or eliminate all hostiles",
+      "completed": false
+    }
+  ],
+  "waypoints": [
+    {
+      "id": 1,
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 10
+      },
+      "radius": 4.0
+    }
+  ],
+  "dialogue": [],
+  "easter_eggs": [],
+  "enemies": [
+    {
+      "type": "alien_grunt",
+      "count": 4,
+      "position": {
+        "x": 20,
+        "y": 0,
+        "z": 20
+      }
+    },
+    {
+      "type": "seeker_bot",
+      "count": 3,
+      "position": {
+        "x": 40,
+        "y": 5,
+        "z": 10
+      }
+    }
+  ]
+}

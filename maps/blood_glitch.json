@@ -1,0 +1,51 @@
+{
+  "mission_id": "blood_glitch",
+  "name": "Blood Glitch",
+  "description": "A corrupted version of Blood Gulch with floating geometry and glitched spawns.",
+  "map": "maps/blood_glitch.json",
+  "spawn": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "objectives": [
+    {
+      "id": 1,
+      "description": "Capture the flag or eliminate all hostiles",
+      "completed": false
+    }
+  ],
+  "waypoints": [
+    {
+      "id": 1,
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 10
+      },
+      "radius": 4.0
+    }
+  ],
+  "dialogue": [],
+  "easter_eggs": [],
+  "enemies": [
+    {
+      "type": "alien_grunt",
+      "count": 5,
+      "position": {
+        "x": 15,
+        "y": 0,
+        "z": 10
+      }
+    },
+    {
+      "type": "alien_elite",
+      "count": 1,
+      "position": {
+        "x": 30,
+        "y": 0,
+        "z": 0
+      }
+    }
+  ]
+}

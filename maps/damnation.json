@@ -1,0 +1,51 @@
+{
+  "mission_id": "damnation",
+  "name": "Damnation",
+  "description": "Circular arena with central temple and underground tunnels. Close-range chaos.",
+  "map": "maps/damnation.json",
+  "spawn": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "objectives": [
+    {
+      "id": 1,
+      "description": "Capture the flag or eliminate all hostiles",
+      "completed": false
+    }
+  ],
+  "waypoints": [
+    {
+      "id": 1,
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 10
+      },
+      "radius": 4.0
+    }
+  ],
+  "dialogue": [],
+  "easter_eggs": [],
+  "enemies": [
+    {
+      "type": "alien_grunt",
+      "count": 6,
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 10
+      }
+    },
+    {
+      "type": "alien_elite",
+      "count": 1,
+      "position": {
+        "x": 20,
+        "y": 0,
+        "z": 20
+      }
+    }
+  ]
+}
