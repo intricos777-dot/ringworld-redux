@@ -2,7 +2,11 @@
 #include "world.h"
 #include "player/controller.h"
 #include "ui/hud.h"
+#include "ui/menu.h"
+#include "ui/menu.h"
+#include "ai/squad.h"
 #include "weapons/weapon_registry.h"
+#include "weapons/inventory.h"
 #include <cstdio>
 #include <chrono>
 #include <thread>
@@ -14,7 +18,7 @@ Game::~Game() { shutdown(); }
 
 bool Game::initialize() {
     if (m_initialized) return true;
-    std::printf("[Game] Initializing TE Halo-Inspired\n");
+    std::printf("[Game] Initializing Ringworld Redux\n");
     m_world = std::make_unique<World>();
     m_world->initialize();
     m_controller = std::make_unique<PlayerController>();

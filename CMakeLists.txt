@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(te-halo-inspired VERSION 0.1.0 LANGUAGES CXX)
+project(ringworld-redux VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -40,6 +40,7 @@ add_library(tehi-ai STATIC
     src/ai/bot.cpp
     src/ai/navmesh.cpp
     src/ai/enemy.cpp
+    src/ai/squad.cpp
 )
 target_link_libraries(tehi-ai PRIVATE tehi-core)
 
@@ -78,12 +79,13 @@ target_link_libraries(tehi-world PRIVATE tehi-core tehi-ai tehi-weapons)
 # UI
 add_library(tehi-ui STATIC
     src/ui/hud.cpp
+    src/ui/menu.cpp
 )
 target_link_libraries(tehi-ui PRIVATE tehi-core)
 
 # Test runner
 enable_testing()
-add_executable(tehi-test src/core/main.cpp)
-target_include_directories(tehi-test PRIVATE src)
-target_link_libraries(tehi-test PRIVATE te-engine tehi-campaign tehi-ui tehi-audio tehi-weapons tehi-world tehi-player)
-add_test(NAME tehi-core COMMAND tehi-test)
+add_executable(ringworld-redux-test src/core/main.cpp)
+target_include_directories(ringworld-redux-test PRIVATE src)
+target_link_libraries(ringworld-redux-test PRIVATE te-engine tehi-campaign tehi-ui tehi-audio tehi-weapons tehi-world tehi-player)
+add_test(NAME ringworld-redux-core COMMAND ringworld-redux-test)
