@@ -15,4 +15,6 @@ public:
     void render() const;
 };
 
+class AudioEngine;
+
 } // namespace tehi

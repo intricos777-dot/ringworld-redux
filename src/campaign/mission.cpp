@@ -1,4 +1,5 @@
 #include "mission.h"
+#include "audio/audio_system.h"
 #include <cstdio>
 
 namespace tehi {
@@ -22,10 +23,14 @@ bool Mission::update(float dt) {
 
 void Mission::save_checkpoint() {
     std::printf("[Campaign] Checkpoint saved\n");
+    auto& trans = get_transition_system();
+    trans.trigger(4); // Alert clip on checkpoint
 }
 
 bool Mission::load_checkpoint() {
     std::printf("[Campaign] Checkpoint loaded\n");
+    auto& trans = get_transition_system();
+    trans.trigger(1); // Light whoosh on load
     return true;
 }
 

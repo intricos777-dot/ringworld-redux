@@ -48,12 +48,24 @@ add_library(tehi-campaign STATIC
     src/campaign/roster.cpp
     src/campaign/companion.cpp
 )
-target_link_libraries(tehi-campaign PRIVATE tehi-core)
+target_include_directories(tehi-campaign PRIVATE src)
+target_link_libraries(tehi-campaign PUBLIC tehi-core tehi-audio)
 
 add_library(tehi-multiplayer STATIC
     src/multiplayer/coop.cpp
 )
+target_include_directories(tehi-multiplayer PRIVATE src)
 target_link_libraries(tehi-multiplayer PRIVATE tehi-core tehi-campaign)
+
+# Audio
+add_library(tehi-audio STATIC
+    src/audio/audio_system.cpp
+    src/audio/music.cpp
+    src/audio/transition.cpp
+    src/audio/voice.cpp
+)
+target_include_directories(tehi-audio PUBLIC src)
+target_link_libraries(tehi-audio PRIVATE tehi-core)
 
 # World/maps
 add_library(tehi-world STATIC
@@ -72,5 +84,5 @@ target_link_libraries(tehi-ui PRIVATE tehi-core)
 enable_testing()
 add_executable(tehi-test src/core/main.cpp)
 target_include_directories(tehi-test PRIVATE src)
-target_link_libraries(tehi-test PRIVATE te-engine tehi-campaign)
+target_link_libraries(tehi-test PRIVATE te-engine tehi-campaign tehi-ui tehi-audio)
 add_test(NAME tehi-core COMMAND tehi-test)

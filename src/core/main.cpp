@@ -1,6 +1,9 @@
 #include "game.h"
 #include "campaign/roster.h"
 #include "campaign/companion.h"
+#include "campaign/mission.h"
+#include "audio/audio_system.h"
+#include "ui/hud.h"
 #include <cstdio>
 
 int main() {
@@ -21,6 +24,26 @@ int main() {
     tehi::StoryCompanion lia;
     lia.initialize();
     lia.say("I am with you. Let us move forward.");
+
+    tehi::AudioEngine audio;
+    audio.initialize();
+    audio.set_master_volume(1.0f);
+    auto& music = tehi::get_music_manager();
+    if (!music.playlist().empty()) {
+        music.play_track(music.playlist()[0].id);
+    }
+
+    tehi::Mission mission;
+    mission.initialize("maps/tutorial.json");
+    mission.save_checkpoint();
+    mission.load_checkpoint();
+
+    tehi::HUD hud;
+    hud.initialize();
+    hud.draw_health(85.0f);
+    hud.draw_shield(50.0f);
+    hud.draw_ammo(24, 96);
+    hud.render();
 
     std::printf("[main] game initialized\n");
     game.run();

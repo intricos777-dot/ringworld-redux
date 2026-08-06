@@ -6,7 +6,7 @@ namespace tehi {
 
 static void scan_playlist_dir(MusicManager& mgr) {
     namespace fs = std::filesystem;
-    const fs::path dir = "assets/audio/music";
+    const fs::path dir = "../assets/audio/music";
     for (const auto& entry : fs::directory_iterator(dir)) {
         if (!entry.is_regular_file()) continue;
         auto ext = entry.path().extension();
