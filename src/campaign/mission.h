@@ -16,6 +16,12 @@ struct Checkpoint {
     float rotation[3];
 };
 
+struct DialogueLine {
+    std::string trigger;
+    std::string speaker;
+    std::string line;
+};
+
 class Mission {
 public:
     Mission() = default;
@@ -25,9 +31,11 @@ public:
     void save_checkpoint();
     bool load_checkpoint();
     const std::vector<MissionObjective>& get_objectives() const { return m_objectives; }
+    const std::vector<DialogueLine>& get_dialogue() const { return m_dialogue; }
 private:
     std::vector<MissionObjective> m_objectives;
     std::vector<Checkpoint> m_checkpoints;
+    std::vector<DialogueLine> m_dialogue;
     uint32_t m_current_checkpoint = 0;
 };
 

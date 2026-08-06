@@ -34,7 +34,7 @@ int main() {
     }
 
     tehi::Mission mission;
-    mission.initialize("maps/tutorial.json");
+    mission.initialize("maps/awakening.json");
     mission.save_checkpoint();
     mission.load_checkpoint();
 

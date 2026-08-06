@@ -1,0 +1,31 @@
+{
+  "mission_id": "first_contact",
+  "name": "First Contact",
+  "description": "The squad makes first contact with the alien forces. Xal'Thun's raiding party ambushes the advance party. Casualties mount until the player chooses to hold the line or fall back.",
+  "map": "maps/awakening.json",
+  "spawn": {"x": 50.0, "y": 0.0, "z": 10.0},
+  "objectives": [
+    {"id": 1, "description": "Hold the line against the alien ambush", "completed": false},
+    {"id": 2, "description": "Rescue the trapped marine element", "completed": false},
+    {"id": 3, "description": "Eliminate the alien commander Xal'Thun", "completed": false},
+    {"id": 4, "description": "Recover the alien data core", "completed": false}
+  ],
+  "waypoints": [
+    {"id": 1, "position": {"x": 55.0, "y": 0.0, "z": 12.0}, "radius": 2.0},
+    {"id": 2, "position": {"x": 65.0, "y": 0.0, "z": 8.0}, "radius": 3.0},
+    {"id": 3, "position": {"x": 75.0, "y": 0.0, "z": 15.0}, "radius": 2.0},
+    {"id": 4, "position": {"x": 85.0, "y": 0.0, "z": 10.0}, "radius": 2.5}
+  ],
+  "dialogue": [
+    {"trigger": "on_spawn", "speaker": "Lia", "line": "Motion sensors confirm multiple contacts. They're not waiting for us to make the first move."},
+    {"trigger": "objective_1_complete", "speaker": "Reaper", "line": "Line holds. Get the wounded back and push forward."},
+    {"trigger": "objective_2_complete", "speaker": "Spectre", "line": "Trapped element secured. Their commander left something behind—a data core."},
+    {"trigger": "objective_3_complete", "speaker": "Oracle Prime", "line": "Xal'Thun is merely a herald. The real enemy is already inside the ring's foundation."},
+    {"trigger": "objective_4_complete", "speaker": "Lia", "line": "Data core extracted. I'm running a decrypt. If the lore dump is anything like the last one, we're in for a long read."}
+  ],
+  "enemies": [
+    {"type": "alien_grunt", "count": 5, "position": {"x": 55.0, "y": 0.0, "z": 12.0}},
+    {"type": "seeker_bot", "count": 2, "position": {"x": 65.0, "y": 0.0, "z": 8.0}},
+    {"type": "alien_commander", "count": 1, "position": {"x": 75.0, "y": 0.0, "z": 15.0}}
+  ]
+}

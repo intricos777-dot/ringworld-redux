@@ -1,0 +1,50 @@
+RINGWORLD REDUX
+===============
+Price: $9.99 USD
+Genre: FPS / Sci-Fi / Co-op / Story-Driven
+Developer: Intricos777
+Release: TBA
+
+ABOUT THIS GAME
+---------------
+You are Living_Sin—an operative with no memory and a lot of questions. Drop onto the Ringworld, an ancient megastructure that was supposed to be an ark. It's not. It's a prison, and something broke the seals.
+
+Ringworld Redux is a full-campaign Halo-inspired FPS built around:
+- 60Hz tactical gameplay with no frame dragging
+- Real US military weapons: M4A1, M16A4, M110, M40A5, M249, M1014, M17/M9A1, M136 AT4, MP7A1
+- 3-slot loadout: Main, Secondary, Space
+- Human explosives: M67 Grenade, M18 Claymore, M15 Anti-Tank Mine
+- Alien arsenal: Seeker Bots, Alien Mines, Sentry Bots
+- Theoretical space weapons: Plasma Rifle, Particle Cannon, Gauss Gun, Laser Pistol, Railgun
+- Legend difficulty: unrestricted human and alien AI with full squad tactics
+- Oracle-inspired AI constructs with dark faction color patterns
+- 4th-wall narrative that knows it's a game
+
+STORY
+-----
+Oracle Prime makes contact. Oracle Shade mocks your loadout. Lia comments on your collision detection. The ringworld is a weapon, a prison, and someone forgot to patch the leaks.
+
+FEATURES
+--------
+- 60-member roster mapped to US branch archetypes
+- 19-track audio, 4 transitions, 8 voice banks
+- Campaign mission: Awakening + First Contact
+- Xbox One controller default with cross-platform binding
+- CE release bug easter eggs
+- Checkpoint system with save/load
+
+SYSTEM REQUIREMENTS
+------------------
+OS: Windows 10/11, Ubuntu 22.04+, Arch Linux
+CPU: 4 cores / 8 threads
+RAM: 16 GB
+GPU: GTX 1060 / RX 580 / Intel Arc A380
+Storage: 12 GB available space
+
+TAGS
+----
+FPS, Sci-Fi, Military, Co-op, Story Rich, Difficult, Aliens, Tactical, Singleplayer, Atmospheric
+
+DESCRIPTION SHORT
+-----------------
+Ringworld Redux. The ark is a prison. The constructs are broken. The aliens brought seeker bots and sentry turrets. You brought an M4A1 and a bad attitude. Drop in, push through, and find out why the save file keeps corrupting.

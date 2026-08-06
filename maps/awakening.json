@@ -1,0 +1,43 @@
+{
+  "mission_id": "awakening",
+  "name": "Awakening",
+  "description": "The operative awakens on the ringworld surface. Lia detects a construct signature. Something feels familiar, like a corrupted save file from a previous run.",
+  "map": "maps/awakening.json",
+  "spawn": {"x": 0.0, "y": 0.0, "z": 0.0},
+  "objectives": [
+    {"id": 1, "description": "Follow Lia's guidance to the Oracle Prime", "completed": false},
+    {"id": 2, "description": "Survive the initial seeker bot swarm", "completed": false},
+    {"id": 3, "description": "Access the Oracle Prime chamber", "completed": false},
+    {"id": 4, "description": "Listen to Oracle Prime's warning", "completed": false},
+    {"id": 5, "description": "Escape the collapsing chamber", "completed": false}
+  ],
+  "waypoints": [
+    {"id": 1, "position": {"x": 5.0, "y": 0.0, "z": 2.0}, "radius": 2.0},
+    {"id": 2, "position": {"x": 15.0, "y": 0.0, "z": 0.0}, "radius": 3.0},
+    {"id": 3, "position": {"x": 25.0, "y": 2.0, "z": -5.0}, "radius": 2.5},
+    {"id": 4, "position": {"x": 35.0, "y": 0.0, "z": 0.0}, "radius": 2.0},
+    {"id": 5, "position": {"x": 50.0, "y": 0.0, "z": 10.0}, "radius": 3.0}
+  ],
+  "dialogue": [
+    {"trigger": "on_spawn", "speaker": "Lia", "line": "Systems online. I am with you. The surface readings are... wrong. This place feels familiar, like a level we've already completed."},
+    {"trigger": "objective_1_complete", "speaker": "Lia", "line": "There. The construct's energy signature matches the data fragments. If this is a simulation, I can't find the edge of the world."},
+    {"trigger": "objective_2_complete", "speaker": "Oracle Prime", "line": "You carry the signal of the builders. I have waited centuries for this contact. Though, between you and me, some of my brothers started malfunctioning after the first update."},
+    {"trigger": "objective_3_complete", "speaker": "Oracle Prime", "line": "The ringworld was designed as an ark. It is now a prison. Something has broken the seals. I can see the patches didn't hold."},
+    {"trigger": "objective_4_complete", "speaker": "Oracle Shade", "line": "Interference detected. The intruder must be purged before the protocols fail. Don't make me reload my ammo count from a previous checkpoint."},
+    {"trigger": "objective_5_complete", "speaker": "Lia", "line": "The chamber is destabilizing. We need to move—now. Try not to fall through the floor on the way out; I hate clipping through geometry."},
+    {"trigger": "easter_egg_warthog", "speaker": "Lia", "line": "Well, that wasn't in the collision mesh. If you can see the bottom of the map, you've found the developers' favorite testing area."},
+    {"trigger": "easter_egg_glitch", "speaker": "Oracle Prime", "line": "Fascinating. Your equipment is displaying corrupted text. This happens when someone mods the asset files without understanding the memory layout."},
+    {"trigger": "easter_egg_infinite", "speaker": "Lia", "line": "Your magazine is not depleting. Either you've found a legendary artifact, or someone spawned this with a debug flag. I'm logging it as the latter."},
+    {"trigger": "menu_casual", "speaker": "Lia", "line": "Casual mode selected. The AI will pretend it can't see you sometimes. I've adjusted the matchmaking to be more forgiving."},
+    {"trigger": "menu_legend", "speaker": "Oracle Shade", "line": "Legend mode. No artificial difficulty. Just raw, unbalanced combat. Don't come crying to me when you get outflanked by a sentry bot with better tactics than your squad."}
+  ],
+  "easter_eggs": [
+    {"trigger": "warthog_launch", "name": "Warthog Launch", "description": "Vehicle launches into the sky. A classic testing bug turned feature."},
+    {"trigger": "glitch_text", "name": "Glitch Text", "description": "Screen displays corrupted text. The asset cache is rejecting malformed glyphs."},
+    {"trigger": "infinite_ammo", "name": "Infinite Ammo", "description": "Weapon never reloads. Someone definitely edited the ammo tables."}
+  ],
+  "enemies": [
+    {"type": "seeker_bot", "count": 3, "position": {"x": 12.0, "y": 0.0, "z": 0.0}},
+    {"type": "alien_grunt", "count": 2, "position": {"x": 20.0, "y": 0.0, "z": 5.0}}
+  ]
+}

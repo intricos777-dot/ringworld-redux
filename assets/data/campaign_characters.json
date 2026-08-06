@@ -1,0 +1,61 @@
+{
+  "constructs": [
+    {
+      "id": "oracle_prime",
+      "name": "Oracle Prime",
+      "role": "Guide",
+      "description": "An ancient construct of deep black hull with crimson circuit patterns. Speaks in measured tones, reveals fragments of the ringworld's purpose. Sometimes references older builds.",
+      "color_primary": "#0a0a0a",
+      "color_secondary": "#8b0000",
+      "eye_color": "#ff3333"
+    },
+    {
+      "id": "oracle_echo",
+      "name": "Oracle Echo",
+      "role": "Strategist",
+      "description": "A shard of the Prime, cloaked in deep violet with silver tracer lines. Calculates probabilities and warns of cascading failures. Once mentioned a patch that never shipped.",
+      "color_primary": "#1a0a2e",
+      "color_secondary": "#c0c0c0",
+      "eye_color": "#e0e0ff"
+    },
+    {
+      "id": "oracle_shade",
+      "name": "Oracle Shade",
+      "role": "Adversary",
+      "description": "An onyx-black fragment with amber warning patterns. Opposes the player's interference, enforces the ring's original protocols. Sarcastic about difficulty settings.",
+      "color_primary": "#0f0f0f",
+      "color_secondary": "#ffbf00",
+      "eye_color": "#ffaa00"
+    },
+    {
+      "id": "oracle_veil",
+      "name": "Oracle Veil",
+      "role": "Mystery",
+      "description": "A charcoal construct with indigo data streams. Withholds information, tests the operatives through indirect scenarios. Seems aware of save scumming.",
+      "color_primary": "#1c1c1c",
+      "color_secondary": "#4b0082",
+      "eye_color": "#9370db"
+    }
+  ],
+  "story_characters": [
+    {"id": "commander_hale", "callsign": "Lighthouse", "branch": "Navy", "role": "Task Force Commander", "status": "active"},
+    {"id": "operative_sin", "callsign": "Living_Sin", "branch": "Special", "role": "Protagonist Operative", "status": "active"},
+    {"id": "lia", "callsign": "Lia", "branch": "Special", "role": "AI Companion", "status": "active"},
+    {"id": "reaper_lead", "callsign": "Reaper", "branch": "Marines", "role": "Infantry Lead", "status": "active"},
+    {"id": "spectre_recon", "callsign": "Spectre", "branch": "Marines", "role": "Recon Lead", "status": "active"},
+    {"id": "wraith_force", "callsign": "Wraith", "branch": "Marines", "role": "Force Recon", "status": "active"},
+    {"id": "zenith_strike", "callsign": "Zenith", "branch": "AirForce", "role": "Strike Command", "status": "active"},
+    {"id": "aegis_defense", "callsign": "Aegis", "branch": "AirForce", "role": "Missile Defense", "status": "active"},
+    {"id": "oracle_prime_npc", "callsign": "Oracle Prime", "branch": "Construct", "role": "Ancient Guide", "status": "unknown"},
+    {"id": "oracle_shade_npc", "callsign": "Oracle Shade", "branch": "Construct", "role": "Protocol Enforcer", "status": "hostile"},
+    {"id": "alien_commander", "callsign": "Xal'Thun", "branch": "Alien", "role": "Warlord", "status": "active"}
+  ],
+  "meta": {
+    "fourth_wall_notes": [
+      "Lia occasionally references game mechanics as if she can see them.",
+      "Oracle constructs sometimes allude to version history, patches, and legacy bugs as if they are in-universe events.",
+      "Oracle Shade mocks the player's chosen difficulty and weapon loadout.",
+      "Some easter eggs are explicitly framed as 'unpatched developer oversights' in the story."
+    ]
+  }
+}
