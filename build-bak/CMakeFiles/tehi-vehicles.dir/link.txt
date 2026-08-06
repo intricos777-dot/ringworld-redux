@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtehi-vehicles.a "CMakeFiles/tehi-vehicles.dir/src/vehicles/vehicle.cpp.o"
+/usr/bin/ranlib libtehi-vehicles.a

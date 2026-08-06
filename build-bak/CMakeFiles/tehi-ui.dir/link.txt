@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtehi-ui.a "CMakeFiles/tehi-ui.dir/src/ui/hud.cpp.o" "CMakeFiles/tehi-ui.dir/src/ui/menu.cpp.o"
+/usr/bin/ranlib libtehi-ui.a

@@ -1,0 +1,28 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  )
+
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/sin/Projects/ringworld-redux/src/ai/boss_alien.cpp" "CMakeFiles/tehi-ai.dir/src/ai/boss_alien.cpp.o" "gcc" "CMakeFiles/tehi-ai.dir/src/ai/boss_alien.cpp.o.d"
+  "/home/sin/Projects/ringworld-redux/src/ai/bot.cpp" "CMakeFiles/tehi-ai.dir/src/ai/bot.cpp.o" "gcc" "CMakeFiles/tehi-ai.dir/src/ai/bot.cpp.o.d"
+  "/home/sin/Projects/ringworld-redux/src/ai/enemy.cpp" "CMakeFiles/tehi-ai.dir/src/ai/enemy.cpp.o" "gcc" "CMakeFiles/tehi-ai.dir/src/ai/enemy.cpp.o.d"
+  "/home/sin/Projects/ringworld-redux/src/ai/guest_ai.cpp" "CMakeFiles/tehi-ai.dir/src/ai/guest_ai.cpp.o" "gcc" "CMakeFiles/tehi-ai.dir/src/ai/guest_ai.cpp.o.d"
+  "/home/sin/Projects/ringworld-redux/src/ai/navmesh.cpp" "CMakeFiles/tehi-ai.dir/src/ai/navmesh.cpp.o" "gcc" "CMakeFiles/tehi-ai.dir/src/ai/navmesh.cpp.o.d"
+  "/home/sin/Projects/ringworld-redux/src/ai/squad.cpp" "CMakeFiles/tehi-ai.dir/src/ai/squad.cpp.o" "gcc" "CMakeFiles/tehi-ai.dir/src/ai/squad.cpp.o.d"
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_FORWARD_LINKED_INFO_FILES
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtehi-multiplayer.a "CMakeFiles/tehi-multiplayer.dir/src/multiplayer/coop.cpp.o"
+/usr/bin/ranlib libtehi-multiplayer.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtehi-world.a "CMakeFiles/tehi-world.dir/src/world/map.cpp.o" "CMakeFiles/tehi-world.dir/src/world/spawner.cpp.o"
+/usr/bin/ranlib libtehi-world.a

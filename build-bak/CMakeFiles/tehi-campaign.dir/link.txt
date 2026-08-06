@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtehi-campaign.a "CMakeFiles/tehi-campaign.dir/src/campaign/campaign.cpp.o" "CMakeFiles/tehi-campaign.dir/src/campaign/mission.cpp.o" "CMakeFiles/tehi-campaign.dir/src/campaign/roster.cpp.o" "CMakeFiles/tehi-campaign.dir/src/campaign/companion.cpp.o"
+/usr/bin/ranlib libtehi-campaign.a

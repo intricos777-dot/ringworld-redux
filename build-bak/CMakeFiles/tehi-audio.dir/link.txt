@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtehi-audio.a "CMakeFiles/tehi-audio.dir/src/audio/audio_system.cpp.o" "CMakeFiles/tehi-audio.dir/src/audio/music.cpp.o" "CMakeFiles/tehi-audio.dir/src/audio/transition.cpp.o" "CMakeFiles/tehi-audio.dir/src/audio/voice.cpp.o" "CMakeFiles/tehi-audio.dir/src/audio/audio_script.cpp.o"
+/usr/bin/ranlib libtehi-audio.a

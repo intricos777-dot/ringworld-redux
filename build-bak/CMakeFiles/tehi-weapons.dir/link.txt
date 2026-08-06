@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtehi-weapons.a "CMakeFiles/tehi-weapons.dir/src/weapons/weapon.cpp.o" "CMakeFiles/tehi-weapons.dir/src/weapons/inventory.cpp.o"
+/usr/bin/ranlib libtehi-weapons.a

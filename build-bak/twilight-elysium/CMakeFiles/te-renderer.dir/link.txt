@@ -1,0 +1,2 @@
+/usr/bin/ar qc libte-renderer.a "CMakeFiles/te-renderer.dir/src/renderer/renderer.cpp.o"
+/usr/bin/ranlib libte-renderer.a

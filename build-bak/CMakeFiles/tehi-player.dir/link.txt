@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtehi-player.a "CMakeFiles/tehi-player.dir/src/player/controller.cpp.o" "CMakeFiles/tehi-player.dir/src/player/camera.cpp.o"
+/usr/bin/ranlib libtehi-player.a

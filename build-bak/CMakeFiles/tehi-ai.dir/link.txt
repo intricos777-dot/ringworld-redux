@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtehi-ai.a "CMakeFiles/tehi-ai.dir/src/ai/bot.cpp.o" "CMakeFiles/tehi-ai.dir/src/ai/navmesh.cpp.o" "CMakeFiles/tehi-ai.dir/src/ai/enemy.cpp.o" "CMakeFiles/tehi-ai.dir/src/ai/squad.cpp.o" "CMakeFiles/tehi-ai.dir/src/ai/guest_ai.cpp.o" "CMakeFiles/tehi-ai.dir/src/ai/boss_alien.cpp.o"
+/usr/bin/ranlib libtehi-ai.a

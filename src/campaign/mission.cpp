@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <cmath>
+#include <cstring>
 
 namespace tehi {
 
@@ -41,12 +42,17 @@ bool Mission::initialize(const std::string& path) {
 
     try {
         json root = json::parse(text);
+        std::printf("[Campaign] JSON parsed OK, keys=%zu\n", root.size());
 
         m_id = root.value("mission_id", "");
+        std::printf("[Campaign] mission_id=%s\n", m_id.c_str());
         m_name = root.value("name", "");
+        std::printf("[Campaign] name=%s\n", m_name.c_str());
         m_description = root.value("description", "");
         m_map = root.value("map", "");
+        std::printf("[Campaign] map=%s\n", m_map.c_str());
         m_finale = root.value("finale", false);
+        std::printf("[Campaign] finale=%d\n", (int)m_finale);
 
         if (root.contains("objectives")) {
             for (const auto& obj : root["objectives"]) {
@@ -57,6 +63,7 @@ bool Mission::initialize(const std::string& path) {
                 m_objectives.push_back(o);
             }
         }
+        std::printf("[Campaign] objectives=%zu\n", m_objectives.size());
 
         if (root.contains("waypoints")) {
             for (const auto& wp : root["waypoints"]) {
@@ -69,6 +76,7 @@ bool Mission::initialize(const std::string& path) {
                 m_waypoints.push_back(w);
             }
         }
+        std::printf("[Campaign] waypoints=%zu\n", m_waypoints.size());
 
         if (root.contains("dialogue")) {
             for (const auto& d : root["dialogue"]) {
@@ -79,6 +87,7 @@ bool Mission::initialize(const std::string& path) {
                 m_dialogue.push_back(line);
             }
         }
+        std::printf("[Campaign] dialogue=%zu\n", m_dialogue.size());
 
         if (root.contains("enemies")) {
             for (const auto& e : root["enemies"]) {
@@ -91,6 +100,7 @@ bool Mission::initialize(const std::string& path) {
                 m_enemies.push_back(entry);
             }
         }
+        std::printf("[Campaign] enemies=%zu\n", m_enemies.size());
 
         if (root.contains("hidden_spawns")) {
             for (const auto& hs : root["hidden_spawns"]) {
@@ -99,11 +109,12 @@ bool Mission::initialize(const std::string& path) {
                 spawn.position[0] = hs.value("x", 0.0f);
                 spawn.position[1] = hs.value("y", 0.0f);
                 spawn.position[2] = hs.value("z", 0.0f);
-                spawn.enemy_type = hs.value("enemy_type", "");
+                spawn.enemy_type = hs["enemy_type"].is_string() ? hs["enemy_type"].get<std::string>() : std::to_string(hs["enemy_type"].get<int>());
                 spawn.count = hs.value("count", 0u);
                 m_hidden_spawns.push_back(spawn);
             }
         }
+        std::printf("[Campaign] hidden_spawns=%zu\n", m_hidden_spawns.size());
     } catch (const std::exception& ex) {
         std::fprintf(stderr, "[Campaign] JSON parse error in %s: %s\n", path.c_str(), ex.what());
         return false;

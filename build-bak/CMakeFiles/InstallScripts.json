@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/sin/Projects/ringworld-redux/build/cmake_install.cmake",
+		"/home/sin/Projects/ringworld-redux/build/twilight-elysium/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
