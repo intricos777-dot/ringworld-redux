@@ -35,6 +35,12 @@ bool SDLGLBackend::initialize(int width, int height, const char* title) {
     SDL_GL_SetSwapInterval(1);
     glViewport(0, 0, width, height);
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    SDL_GL_SwapWindow(m_window);
+    SDL_ShowWindow(m_window);
+    SDL_RaiseWindow(m_window);
+    SDL_SetWindowMinimumSize(m_window, 640, 360);
+    SDL_GL_SetSwapInterval(1);
     m_initialized = true;
     std::printf("[Renderer] SDL+GL backend initialized: %dx%d\n", width, height);
     return true;

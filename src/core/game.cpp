@@ -125,6 +125,9 @@ void Game::run() {
             m_controller->set_key_state(InputKey::AltFire, false);
             m_controller->set_key_state(InputKey::Reload, false);
         }
+        bool close = false;
+        if (m_renderer) close = m_renderer->poll_events(m_controller.get());
+        if (close) { m_running = false; break; }
         update_input(dt);
         update_campaign(dt);
         get_easter_egg_system().update(dt);
