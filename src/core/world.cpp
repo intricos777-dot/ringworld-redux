@@ -1,6 +1,10 @@
 #include "world.h"
 #include "core/alien_panic.h"
+#include "core/game.h"
+#include "campaign/mission.h"
 #include <cstdio>
+#include <algorithm>
+#include <cctype>
 
 namespace tehi {
 
@@ -62,8 +66,35 @@ void World::damage_entity(uint32_t entity_id, float amount) {
                 e.health = 0.0f;
                 e.active = false;
                 std::printf("[World] Entity %u destroyed\n", entity_id);
-                if (e.type == 1) {
-                    notify_elite_killed(entity_id, 0);
+                // Find squad_id for this entity and notify panic system
+                for (const auto& alien : m_alien_panic.get_aliens()) {
+                    if (alien.entity_id == entity_id) {
+                        notify_elite_killed(entity_id, alien.squad_id);
+                        break;
+                    }
+                }
+                // Check kill-based objectives
+                auto* game = Game::instance_ptr();
+                if (game && game->get_mission()) {
+                    const char* type_name = nullptr;
+                    switch (e.type) {
+                        case 1: type_name = "drone"; break;
+                        case 2: type_name = "target"; break;
+                        case 3: type_name = "seeker"; break;
+                        case 4: type_name = "commander"; break;
+                        default: break;
+                    }
+                    if (type_name) {
+                        for (auto& obj : game->get_mission()->get_objectives()) {
+                            if (!obj.completed) {
+                                std::string desc = obj.description;
+                                std::transform(desc.begin(), desc.end(), desc.begin(), ::tolower);
+                                if (desc.find(type_name) != std::string::npos) {
+                                    game->get_mission()->complete_objective(obj.id);
+                                }
+                            }
+                        }
+                    }
                 }
             } else {
                 std::printf("[World] Entity %u took %.1f damage -> hp=%.1f shield=%.1f\n",

@@ -4,6 +4,7 @@
 #include <cstdint>
 #include "campaign/campaign.h"
 #include "audio/audio_script.h"
+#include "multiplayer/coop.h"
 
 namespace tehi {
 
@@ -42,6 +43,7 @@ public:
     bool advance_campaign() { return m_campaign.advance(); }
     const CampaignMission* current_campaign_mission() const { return m_campaign.current(); }
     size_t campaign_index() const { return m_campaign.index(); }
+    void set_campaign(const Campaign& c) { m_campaign = c; }
     size_t campaign_count() const { return m_campaign.count(); }
 
 private:
@@ -62,6 +64,7 @@ private:
     std::unique_ptr<SaveSystem> m_save;
     std::unique_ptr<NetworkSystem> m_network;
     std::unique_ptr<Mission> m_mission;
+    std::unique_ptr<tehi::CoopSession> m_coop;
     Campaign m_campaign;
     bool m_legend_mode = false;
 

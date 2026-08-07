@@ -15,6 +15,7 @@
 #include "renderer/sdl_gl_backend.h"
 #include "campaign/campaign.h"
 #include "audio/audio_script.h"
+#include "multiplayer/coop.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -49,6 +50,7 @@ bool Game::initialize() {
     m_save->initialize();
     m_save->load("savegame.sav");
     m_network = std::make_unique<NetworkSystem>();
+    m_coop = std::make_unique<tehi::CoopSession>();
     if (getenv("RR_AUTO_HOST") && m_network) {
         uint16_t port = (uint16_t)std::atoi(getenv("RR_AUTO_HOST"));
         if (port == 0) port = 7777;
@@ -73,16 +75,18 @@ void Game::run() {
     using clock = std::chrono::steady_clock;
     auto next_tick = clock::now();
     const auto tick_duration = std::chrono::milliseconds(16);
-
     std::printf("[Game] Running...\n");
     if (std::getenv("RR_TEST_FIRE")) {
         if (m_menu) m_menu->set_active(false);
         m_main_menu = false;
         if (m_world && !m_world->get_entities().empty()) {
-            const auto& e = m_world->get_entities().front();
-            std::printf("[Test] RR_TEST_FIRE -> apply_weapon_damage toward entity %u at (%.1f,%.1f,%.1f)\n", e.id, e.position[0], e.position[1], e.position[2]);
-            apply_weapon_damage(e.position[0], e.position[1], e.position[2], 2.0f, 10.0f);
+            apply_weapon_damage(5.0f, 0.0f, 0.0f, 50.0f, 200.0f);
         }
+    }
+    if (std::getenv("RR_TEST_PLAY") || std::getenv("RR_TEST_MOVE")) {
+        if (m_menu) m_menu->set_active(false);
+        m_main_menu = false;
+        std::printf("[Test] RR_TEST_PLAY/MOVE: auto-start campaign\n");
     }
     int test_fire_frames = 0;
     while (m_running && !m_should_close) {
@@ -165,6 +169,10 @@ void Game::update_input(float dt) {
     (void)dt;
     if (!m_controller) return;
     if (m_menu && m_menu->is_active()) {
+        // Test mode: auto-select HostGame
+        if (std::getenv("RR_TEST_HOST")) {
+            m_menu->move_selection(2); // HostGame is 3rd item (index 2)
+        }
         if (m_controller->wants_fire() || m_controller->wants_next_weapon()) {
             switch (m_menu->get_selected_action()) {
                 case MenuAction::Quit:
@@ -176,11 +184,13 @@ void Game::update_input(float dt) {
                         m_main_menu = false;
                     }
                     return;
-                case MenuAction::JoinGame:
-                    start_join("127.0.0.1");
+                case MenuAction::JoinGame: {
+                    const char* join_host = std::getenv("RR_JOIN_HOST");
+                    std::string host = join_host ? join_host : "127.0.0.1";
+                    start_join(host);
                     m_menu->set_active(false);
                     m_main_menu = false;
-                    return;
+                } return;
                 default:
                     break;
             }
@@ -195,14 +205,19 @@ void Game::update_input(float dt) {
     float move_speed = m_controller->wants_sprint() ? 6.0f : 3.0f;
     float fwd = m_controller->wants_forward() ? 1.0f : m_controller->wants_back() ? -1.0f : 0.0f;
     float strafe = m_controller->wants_right() ? 1.0f : m_controller->wants_left() ? -1.0f : 0.0f;
+    float vert = 0.0f;
+    if (m_controller->is_key_down(InputKey::Jump)) vert += 1.0f;
+    if (m_controller->is_key_down(InputKey::Crouch)) vert -= 1.0f;
     float cam_yaw = m_world ? m_world->get_camera().yaw : 0.0f;
     float cosy = std::cos(cam_yaw);
     float siny = std::sin(cam_yaw);
     m_player_velocity[0] = (cosy * fwd - siny * strafe) * move_speed;
+    m_player_velocity[1] = vert * move_speed;
     m_player_velocity[2] = (-siny * fwd - cosy * strafe) * move_speed;
     m_player_position[0] += m_player_velocity[0] * dt;
     m_player_position[1] += m_player_velocity[1] * dt;
     m_player_position[2] += m_player_velocity[2] * dt;
+    m_controller->set_position(m_player_position[0], m_player_position[1], m_player_position[2]);
     if (m_world) {
         tehi::CameraState cam_state;
         cam_state.position[0] = m_player_position[0];
@@ -238,10 +253,16 @@ void Game::update_input(float dt) {
     if (m_controller->wants_prev_weapon()) {
         cycle_weapon(-1);
     }
+    // Test movement: simulate WASD if RR_TEST_MOVE is set
+    if (std::getenv("RR_TEST_MOVE")) {
+        m_controller->set_key_state(InputKey::Forward, true);
+        m_controller->set_key_state(InputKey::Sprint, true);
+    }
 }
 
 bool Game::start_host(uint16_t port) {
     if (!m_network) return false;
+    if (m_coop) m_coop->host("campaign", tehi::SessionMode::LocalServer);
     if (m_network->host(port)) {
         std::printf("[Game] Hosting multiplayer on port %u\n", (unsigned)port);
         return true;
@@ -252,6 +273,7 @@ bool Game::start_host(uint16_t port) {
 
 bool Game::start_join(const std::string& host, uint16_t port) {
     if (!m_network) return false;
+    if (m_coop) m_coop->join(host);
     if (m_network->join(host, port)) {
         std::printf("[Game] Joining multiplayer at %s:%u\n", host.c_str(), (unsigned)port);
         return true;

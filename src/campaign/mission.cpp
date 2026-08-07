@@ -162,6 +162,16 @@ bool Mission::update(float dt, const float* player_position) {
         trigger_dialogue("on_spawn");
     }
 
+    // Test mode: auto-complete all objectives immediately
+    if (std::getenv("RR_TEST_COMPLETE")) {
+        for (auto& obj : m_objectives) {
+            if (!obj.completed) {
+                obj.completed = true;
+                std::printf("[Campaign] [TEST] Auto-completed: %s\n", obj.description.c_str());
+            }
+        }
+    }
+
     for (auto& obj : m_objectives) {
         if (!obj.completed) {
             if (m_last_printed_objective_id != obj.id) {
@@ -186,20 +196,53 @@ bool Mission::update(float dt, const float* player_position) {
             if (dist <= wp.radius) {
                 if (i < m_objectives.size() && !m_objectives[i].completed) {
                     m_objectives[i].completed = true;
+                    m_last_printed_objective_id = m_objectives[i].id;
                     std::printf("[Campaign] Completed: %s\n", m_objectives[i].description.c_str());
                     trigger_dialogue(std::string("objective_") + std::to_string(m_objectives[i].id) + "_complete");
                     if (m_finale && i == m_objectives.size() - 1) {
                         complete_mission();
                     }
                 }
-                if (i + 1 < m_objectives.size() && !m_objectives[i + 1].completed) {
-                    m_objectives[i + 1].completed = true;
-                    std::printf("[Campaign] Waypoint %u reached: %s\n", (unsigned)wp.id, m_objectives[i + 1].description.c_str());
-                }
                 break;
             }
         }
     }
+
+    // Auto-complete mission when all objectives done
+    if (!m_mission_completed && !m_objectives.empty()) {
+        bool all_done = true;
+        for (const auto& obj : m_objectives) {
+            if (!obj.completed) { all_done = false; break; }
+        }
+        if (all_done) {
+            complete_mission();
+        }
+    }
+
+    // Save checkpoint when all-but-last objective complete
+    if (!m_objectives.empty() && m_objectives.size() > 1) {
+        size_t completed_count = 0;
+        for (const auto& obj : m_objectives) {
+            if (obj.completed) ++completed_count;
+        }
+        if (completed_count == m_objectives.size() - 1 && !m_mission_completed) {
+            save_checkpoint();
+        }
+    }
+
+    // Legend mode: spawn hidden enemies when all-but-last objective complete (panic chain trigger)
+    if (get_game_mode_system().is_legend() && !m_hidden_spawns.empty() && !m_mission_completed) {
+        bool all_but_last = true;
+        for (size_t i = 0; i + 1 < m_objectives.size(); ++i) {
+            if (!m_objectives[i].completed) { all_but_last = false; break; }
+        }
+        if (all_but_last) {
+            spawn_hidden_enemies();
+            m_hidden_spawns.clear(); // one-shot trigger
+            std::printf("[Campaign] Legend mode panic chain triggered\n");
+        }
+    }
+
     return true;
 }
 
@@ -274,10 +317,23 @@ void Mission::spawn_hidden_enemies() {
 void Mission::spawn_bosses() {
     auto* world = Game::instance().get_world();
     if (!world) return;
+    uint32_t bosses_alive = 0;
     for (const auto& b : m_bosses) {
         for (uint32_t i = 0; i < b.count; ++i) {
-            Entity* ent = world->spawn_entity(b.type, b.position[0], b.position[1], b.position[2]);
-            if (ent && b.health > 0.0f) ent->health = b.health;
+            // Map arc_collapse boss types to named entity types
+            uint32_t boss_type = b.type;
+            if (boss_type == 1) boss_type = 10; // OracleWarden
+            else if (boss_type == 2) boss_type = 11; // OracleShade
+            else if (boss_type == 3) boss_type = 12; // DestructionBoss
+            Entity* ent = world->spawn_entity(boss_type, b.position[0], b.position[1], b.position[2]);
+            if (ent) {
+                // 2hp pulse buff: +20% per boss currently alive
+                float buff = 1.0f + (bosses_alive * 0.2f);
+                ent->health = b.health > 0.0f ? (uint32_t)(b.health * buff) : (uint32_t)(120.0f * buff);
+                ++bosses_alive;
+                std::printf("[Campaign] Spawned boss type %u (mapped from %u) with hp=%.0f (buff=%.1f)\n",
+                    boss_type, b.type, (double)ent->health, (double)buff);
+            }
         }
     }
     if (!m_bosses.empty()) {

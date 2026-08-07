@@ -38,6 +38,7 @@ public:
     void notify_elite_killed(uint32_t squad_id);
     AIPanicState get_panic_state(uint32_t entity_id) const;
     const char* get_panic_line(AIPanicState state) const;
+    const std::vector<AlienAgent>& get_aliens() const { return m_aliens; }
 private:
     std::vector<AlienAgent> m_aliens;
     float m_panic_check_timer = 0.0f;

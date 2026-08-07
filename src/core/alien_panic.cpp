@@ -65,7 +65,7 @@ void AlienSquadManager::update(float dt) {
 
     for (auto& alien : m_aliens) {
         if (alien.rank == AIAlienRank::Grunt && !alien.has_elite_support) {
-            alien.panic_meter += 25.0f * dt;
+            alien.panic_meter += 15.0f; // per-check increment (~7.5/sec at 2s interval)
             if (alien.panic_meter >= alien.panic_threshold) {
                 alien.panic_state = AIPanicState::Ballistic;
                 std::printf("[AlienPanic] %u: %s\n", alien.entity_id, get_panic_line(AIPanicState::Ballistic));

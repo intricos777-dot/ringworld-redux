@@ -56,6 +56,7 @@ int main() {
 
     tehi::Campaign campaign;
     campaign.initialize();
+    game.set_campaign(campaign);
     if (!campaign.missions().empty()) {
         const auto* cur = campaign.current();
         std::printf("[main] Current mission: %s (%u/%u)\n", cur->name.c_str(), (unsigned)campaign.index() + 1u, (unsigned)campaign.count());

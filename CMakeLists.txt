@@ -23,7 +23,7 @@ add_library(tehi-core STATIC
     src/renderer/sdl_gl_backend.cpp
     src/audio/audio_script.cpp
 )
-target_link_libraries(tehi-core PUBLIC te-engine te-renderer te-asset tehi-player tehi-ui SDL2 GL)
+target_link_libraries(tehi-core PUBLIC te-engine te-renderer te-asset tehi-player tehi-ui tehi-multiplayer SDL2 GL)
 target_include_directories(tehi-core PUBLIC include src)
 
 # Player controller
@@ -102,5 +102,5 @@ target_link_libraries(tehi-ui PRIVATE tehi-core)
 enable_testing()
 add_executable(ringworld-redux-test src/core/main.cpp)
 target_include_directories(ringworld-redux-test PRIVATE src)
-target_link_libraries(ringworld-redux-test PRIVATE te-engine tehi-campaign tehi-ui tehi-audio tehi-weapons tehi-world tehi-player)
+target_link_libraries(ringworld-redux-test PRIVATE te-engine tehi-campaign tehi-ui tehi-audio tehi-weapons tehi-world tehi-player tehi-multiplayer)
 add_test(NAME ringworld-redux-core COMMAND ringworld-redux-test)
