@@ -264,7 +264,24 @@ void Game::update_campaign(float dt) {
     (void)dt;
     if (!m_mission) return;
     const char* skip = getenv("RR_CAMPAIGN_SKIP");
+    if (skip) {
+        std::printf("[Game] RR_CAMPAIGN_SKIP=%s\n", skip);
+    }
     m_mission->update(dt, m_player_position);
+    if (m_mission->completed()) {
+        std::printf("[Game] Mission complete, attempting advance...\n");
+        if (m_campaign.advance()) {
+            const auto* next = m_campaign.current();
+            if (next) {
+                std::printf("[Game] Advanced to mission: %s\n", next->name.c_str());
+                load_mission(next->map.c_str());
+                m_mission->set_index((uint32_t)m_campaign.index());
+            }
+        } else {
+            std::printf("[Game] Campaign complete!\n");
+            m_mission->set_index((uint32_t)m_campaign.index());
+        }
+    }
 }
 
 void Game::render_frame() const {

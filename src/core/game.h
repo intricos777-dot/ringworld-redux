@@ -2,6 +2,8 @@
 #include <vector>
 #include <memory>
 #include <cstdint>
+#include "campaign/campaign.h"
+#include "audio/audio_script.h"
 
 namespace tehi {
 
@@ -17,6 +19,10 @@ class SaveSystem;
 class NetworkSystem;
 class Mission;
 class AchievementSystem;
+class GameModeSystem;
+class LevelModifierSystem;
+struct CampaignMission;
+class Campaign;
 
 class Game {
 public:
@@ -25,11 +31,18 @@ public:
 
     bool initialize();
     bool load_mission(const char* path);
+    Mission* get_mission() const { return m_mission.get(); }
+    AudioScript* get_audio_script() const { return m_audio_script.get(); }
+    SaveSystem* get_save_system() const { return m_save.get(); }
+    static Game* instance_ptr() { return &instance(); }
     void run();
     void shutdown();
-
     static Game& instance();
     World* get_world() const { return m_world.get(); }
+    bool advance_campaign() { return m_campaign.advance(); }
+    const CampaignMission* current_campaign_mission() const { return m_campaign.current(); }
+    size_t campaign_index() const { return m_campaign.index(); }
+    size_t campaign_count() const { return m_campaign.count(); }
 
 private:
     bool m_running = false;
@@ -49,6 +62,8 @@ private:
     std::unique_ptr<SaveSystem> m_save;
     std::unique_ptr<NetworkSystem> m_network;
     std::unique_ptr<Mission> m_mission;
+    Campaign m_campaign;
+    bool m_legend_mode = false;
 
     uint32_t m_equipped_main = 3;      // M4A1_CARBINE
     uint32_t m_equipped_secondary = 1;  // M17_9MM

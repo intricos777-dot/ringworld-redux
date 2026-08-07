@@ -73,12 +73,15 @@ public:
     const std::vector<EnemyEntry>& get_enemies() const { return m_enemies; }
     const std::vector<HiddenSpawn>& get_hidden_spawns() const { return m_hidden_spawns; }
     const std::vector<Waypoint>& get_waypoints() const { return m_waypoints; }
+    const std::vector<BossEntry>& get_bosses() const { return m_bosses; }
     bool is_finale() const { return m_finale; }
     bool completed() const { return m_mission_completed; }
     std::string id() const { return m_id; }
     std::string name() const { return m_name; }
     std::string description() const { return m_description; }
     std::string map() const { return m_map; }
+    uint32_t index() const { return m_index; }
+    void set_index(uint32_t idx) { m_index = idx; }
     uint32_t enemy_type_to_uint(const std::string& type) const;
 private:
     std::string m_id;

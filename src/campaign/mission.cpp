@@ -3,6 +3,7 @@
 #include "core/achievements.h"
 #include "core/game_mode.h"
 #include "core/level_modifier.h"
+#include "core/save_system.h"
 #include "core/world.h"
 #include "core/game.h"
 #include <nlohmann/json.hpp>
@@ -219,6 +220,10 @@ void Mission::trigger_dialogue(const std::string& trigger) {
     for (const auto& d : m_dialogue) {
         if (d.trigger == trigger) {
             std::printf("[Campaign] %s: %s\n", d.speaker.c_str(), d.line.c_str());
+            auto* game = Game::instance_ptr();
+            if (game && game->get_audio_script()) {
+                game->get_audio_script()->execute(trigger);
+            }
             break;
         }
     }
@@ -296,8 +301,8 @@ void Mission::apply_scaling() {
         }
     }
 }
-
 void Mission::complete_mission() {
+    if (m_mission_completed) return;
     m_mission_completed = true;
     m_on_spawn_printed = true;
     std::printf("[Campaign] Mission complete: %s\n", m_name.c_str());
@@ -310,6 +315,11 @@ void Mission::complete_mission() {
     if (m_id == "spire_echo") achievements.unlock(Achievement::ACHIEVEMENT_CLEAR_FOUNDATION);
     if (m_finale) achievements.unlock(Achievement::ACHIEVEMENT_CLEAR_ALL_MISSIONS);
     if (get_game_mode_system().is_legend()) achievements.unlock(Achievement::ACHIEVEMENT_LEGEND_COMPLETE);
+
+    auto* game = Game::instance_ptr();
+    if (game && game->get_save_system()) {
+        game->get_save_system()->save("savegame.sav");
+    }
 }
 
 uint32_t Mission::enemy_type_to_uint(const std::string& type) const {

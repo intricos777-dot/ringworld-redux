@@ -7,6 +7,7 @@
 #include "ui/hud.h"
 #include "core/achievements.h"
 #include "core/game_mode.h"
+#include "core/level_modifier.h"
 #include <cstdio>
 
 int main() {
@@ -44,15 +45,24 @@ int main() {
     achievements.initialize();
 
     tehi::get_game_mode_system().set_mode(tehi::GameMode::Casual);
+    if (std::getenv("RR_LEGEND")) {
+        tehi::get_game_mode_system().set_mode(tehi::GameMode::Legend);
+        std::printf("[Mode] Legend mode active\n");
+    }
     if (tehi::get_game_mode_system().is_legend()) {
         std::printf("[Mode] Legend mode active\n");
     }
+    tehi::get_level_modifier_system().initialize();
 
     tehi::Campaign campaign;
     campaign.initialize();
     if (!campaign.missions().empty()) {
-        std::printf("[main] Current mission: %s\n", campaign.current()->name.c_str());
-        game.load_mission(campaign.current()->map.c_str());
+        const auto* cur = campaign.current();
+        std::printf("[main] Current mission: %s (%u/%u)\n", cur->name.c_str(), (unsigned)campaign.index() + 1u, (unsigned)campaign.count());
+        game.load_mission(cur->map.c_str());
+        if (game.get_mission()) {
+            game.get_mission()->set_index((uint32_t)campaign.index());
+        }
     }
 
     tehi::HUD hud;
