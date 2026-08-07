@@ -41,6 +41,13 @@ struct Waypoint {
     float radius = 0.0f;
 };
 
+struct BossEntry {
+    uint32_t type = 0;
+    uint32_t count = 0;
+    float position[3];
+    float health = 120.0f;
+};
+
 class AchievementSystem;
 class GameModeSystem;
 class World;
@@ -52,12 +59,14 @@ public:
     bool initialize(const std::string& path);
     bool update(float dt, const float* player_position);
     void spawn(World* world);
-    void save_checkpoint();
-    bool load_checkpoint();
-    void complete_objective(uint32_t id);
-    void complete_mission();
     void spawn_enemies();
     void spawn_hidden_enemies();
+    void spawn_bosses();
+    void apply_scaling();
+    void complete_mission();
+    void complete_objective(uint32_t id);
+    void save_checkpoint();
+    bool load_checkpoint();
     void trigger_dialogue(const std::string& trigger);
     const std::vector<MissionObjective>& get_objectives() const { return m_objectives; }
     const std::vector<DialogueLine>& get_dialogue() const { return m_dialogue; }
@@ -82,6 +91,8 @@ private:
     std::vector<EnemyEntry> m_enemies;
     std::vector<HiddenSpawn> m_hidden_spawns;
     std::vector<Waypoint> m_waypoints;
+    std::vector<BossEntry> m_bosses;
+    uint32_t m_index = 0;
     uint32_t m_current_checkpoint = 0;
     bool m_finale = false;
     uint32_t m_last_printed_objective_id = 0;

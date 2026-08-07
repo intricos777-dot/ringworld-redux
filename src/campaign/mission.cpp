@@ -2,6 +2,7 @@
 #include "audio/audio_system.h"
 #include "core/achievements.h"
 #include "core/game_mode.h"
+#include "core/level_modifier.h"
 #include "core/world.h"
 #include "core/game.h"
 #include <nlohmann/json.hpp>
@@ -119,6 +120,20 @@ bool Mission::initialize(const std::string& path) {
             }
         }
         std::printf("[Campaign] hidden_spawns=%zu\n", m_hidden_spawns.size());
+
+        if (root.contains("bosses")) {
+            for (const auto& b : root["bosses"]) {
+                BossEntry boss;
+                boss.type = b.value("type", 0u);
+                boss.count = b.value("count", 1u);
+                boss.position[0] = b["position"].value("x", 0.0f);
+                boss.position[1] = b["position"].value("y", 0.0f);
+                boss.position[2] = b["position"].value("z", 0.0f);
+                boss.health = b.value("health", 120.0f);
+                m_bosses.push_back(boss);
+            }
+        }
+        std::printf("[Campaign] bosses=%zu\n", m_bosses.size());
     } catch (const std::exception& ex) {
         std::fprintf(stderr, "[Campaign] JSON parse error in %s: %s\n", path.c_str(), ex.what());
         return false;
@@ -137,6 +152,8 @@ bool Mission::update(float dt, const float* player_position) {
     if (!m_started) {
         m_started = true;
         spawn_enemies();
+        apply_scaling();
+        spawn_bosses();
         if (get_game_mode_system().is_legend() && !m_hidden_spawns.empty()) {
             std::printf("[Campaign] Legend hidden spawns active: %zu\n", m_hidden_spawns.size());
             spawn_hidden_enemies();
@@ -249,8 +266,38 @@ void Mission::spawn_hidden_enemies() {
     std::printf("[Campaign] Spawned %zu hidden enemy groups\n", m_hidden_spawns.size());
 }
 
+void Mission::spawn_bosses() {
+    auto* world = Game::instance().get_world();
+    if (!world) return;
+    for (const auto& b : m_bosses) {
+        for (uint32_t i = 0; i < b.count; ++i) {
+            Entity* ent = world->spawn_entity(b.type, b.position[0], b.position[1], b.position[2]);
+            if (ent && b.health > 0.0f) ent->health = b.health;
+        }
+    }
+    if (!m_bosses.empty()) {
+        std::printf("[Campaign] Spawned %zu boss groups\n", m_bosses.size());
+    }
+}
+
+void Mission::apply_scaling() {
+    auto& lm = get_level_modifier_system();
+    uint32_t mission_level = (uint32_t)(m_index + 1u);
+    if (mission_level <= 7) return;
+    std::printf("[Campaign] Scaling active from level %u\n", mission_level);
+    auto* world = Game::instance().get_world();
+    if (!world) return;
+    for (auto& e : world->get_entities()) {
+        if (!e.active) continue;
+        EnemyClass upgraded = lm.get_upgraded_enemy(mission_level, e.type);
+        if (upgraded != (EnemyClass)e.type) {
+            e.type = (uint32_t)upgraded;
+            std::printf("[Campaign] Enemy %u upgraded to %u\n", e.id, e.type);
+        }
+    }
+}
+
 void Mission::complete_mission() {
-    if (m_mission_completed) return;
     m_mission_completed = true;
     m_on_spawn_printed = true;
     std::printf("[Campaign] Mission complete: %s\n", m_name.c_str());
