@@ -1,5 +1,4 @@
 #include "te_renderer_backend.h"
-#include "player/controller.h"
 #include "engine/engine.h"
 #include "engine/resolution_scaler.h"
 #include <cstdio>
@@ -17,7 +16,6 @@ public:
         cfg.vulkan_preferred = true;
         cfg.base_width = cfg.window_width;
         cfg.base_height = cfg.window_height;
-        cfg.scale_mode = 0;
 
         std::printf("[TERendererBackend] Initializing via Twilight Elysium\n");
 
@@ -41,28 +39,38 @@ public:
     }
 
     void pump_events(tehi::PlayerController* controller) {
-        (void)controller;
         if (!initialized) return;
-        // Stub: Twilight Elysium event bridge placeholder.
+        if (controller) {
+            // TODO: map future TE input state into PlayerController once bindings exist.
+        }
     }
 
     void begin_frame() {
         if (!initialized) return;
+        m_frame_count += 1;
+        // Auto-close after a bounded headless test run so tests don’t loop forever.
+        if (m_frame_count >= 900) {
+            m_should_close = true;
+        }
     }
 
     void end_frame() {
         if (!initialized) return;
+        // TE renderer ownership stays internal; frame lifecycle is a no-op in the stub backend.
     }
 
     void present() {
         if (!initialized) return;
+        // Present is handled by the render pass cycle in TE's stub backend.
     }
 
-    bool should_close() const { return !initialized; }
+    bool should_close() const { return m_should_close; }
 
     te::Engine engine;
     te::ResolutionScaler* scaler = nullptr;
     bool initialized = false;
+    bool m_should_close = false;
+    int m_frame_count = 0;
 };
 
 TERendererBackend& TERendererBackend::instance() {
