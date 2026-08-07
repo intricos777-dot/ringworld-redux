@@ -31,6 +31,11 @@ bool LevelModifierSystem::initialize() {
     return true;
 }
 
+LevelModifierSystem& get_level_modifier_system() {
+    static LevelModifierSystem instance;
+    return instance;
+}
+
 EnemyClass LevelModifierSystem::get_upgraded_enemy(uint32_t level, uint32_t base_type) const {
     if (level <= 7) return (EnemyClass)base_type;
     EnemyClass base = (EnemyClass)base_type;

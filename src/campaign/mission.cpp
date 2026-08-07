@@ -1,5 +1,9 @@
 #include "mission.h"
 #include "audio/audio_system.h"
+#include "core/achievements.h"
+#include "core/game_mode.h"
+#include "core/world.h"
+#include "core/game.h"
 #include <nlohmann/json.hpp>
 #include <cstdio>
 #include <fstream>
@@ -130,6 +134,16 @@ bool Mission::initialize(const std::string& path) {
 
 bool Mission::update(float dt, const float* player_position) {
     (void)dt;
+    if (!m_started) {
+        m_started = true;
+        spawn_enemies();
+        if (get_game_mode_system().is_legend() && !m_hidden_spawns.empty()) {
+            std::printf("[Campaign] Legend hidden spawns active: %zu\n", m_hidden_spawns.size());
+            spawn_hidden_enemies();
+        }
+        trigger_dialogue("on_spawn");
+    }
+
     for (auto& obj : m_objectives) {
         if (!obj.completed) {
             if (m_last_printed_objective_id != obj.id) {
@@ -155,6 +169,10 @@ bool Mission::update(float dt, const float* player_position) {
                 if (i < m_objectives.size() && !m_objectives[i].completed) {
                     m_objectives[i].completed = true;
                     std::printf("[Campaign] Completed: %s\n", m_objectives[i].description.c_str());
+                    trigger_dialogue(std::string("objective_") + std::to_string(m_objectives[i].id) + "_complete");
+                    if (m_finale && i == m_objectives.size() - 1) {
+                        complete_mission();
+                    }
                 }
                 if (i + 1 < m_objectives.size() && !m_objectives[i + 1].completed) {
                     m_objectives[i + 1].completed = true;
@@ -200,6 +218,60 @@ bool Mission::load_checkpoint() {
     auto& trans = get_transition_system();
     trans.trigger(1); // Light whoosh on load
     return true;
+}
+
+void Mission::spawn(World* world) {
+    if (!world) return;
+    for (const auto& e : m_enemies) {
+        for (uint32_t i = 0; i < e.count; ++i) {
+            uint32_t t = enemy_type_to_uint(e.type);
+            world->spawn_entity(t, e.position[0], e.position[1], e.position[2]);
+        }
+    }
+    std::printf("[Campaign] Spawned %zu enemy groups\n", m_enemies.size());
+}
+
+void Mission::spawn_enemies() {
+    auto* world = Game::instance().get_world();
+    spawn(world);
+}
+
+void Mission::spawn_hidden_enemies() {
+    auto* world = Game::instance().get_world();
+    if (!world) return;
+    for (const auto& hs : m_hidden_spawns) {
+        uint32_t t = 0;
+        try { t = std::stoi(hs.enemy_type); } catch (...) { t = 0; }
+        for (uint32_t i = 0; i < hs.count; ++i) {
+            world->spawn_entity(t, hs.position[0], hs.position[1], hs.position[2]);
+        }
+    }
+    std::printf("[Campaign] Spawned %zu hidden enemy groups\n", m_hidden_spawns.size());
+}
+
+void Mission::complete_mission() {
+    if (m_mission_completed) return;
+    m_mission_completed = true;
+    m_on_spawn_printed = true;
+    std::printf("[Campaign] Mission complete: %s\n", m_name.c_str());
+    trigger_dialogue("mission_complete");
+
+    auto& achievements = AchievementSystem::instance();
+    if (m_id == "tutorial" || m_id == "primer") achievements.unlock(Achievement::ACHIEVEMENT_CLEAR_AWAKENING);
+    if (m_id == "signal_lost") achievements.unlock(Achievement::ACHIEVEMENT_CLEAR_FIRST_CONTACT);
+    if (m_id == "breach_zero") achievements.unlock(Achievement::ACHIEVEMENT_CLEAR_TOWER_OF_BABEL);
+    if (m_id == "spire_echo") achievements.unlock(Achievement::ACHIEVEMENT_CLEAR_FOUNDATION);
+    if (m_finale) achievements.unlock(Achievement::ACHIEVEMENT_CLEAR_ALL_MISSIONS);
+    if (get_game_mode_system().is_legend()) achievements.unlock(Achievement::ACHIEVEMENT_LEGEND_COMPLETE);
+}
+
+uint32_t Mission::enemy_type_to_uint(const std::string& type) const {
+    if (type == "alien_grunt") return 1;
+    if (type == "alien_elite") return 2;
+    if (type == "seeker_bot") return 3;
+    if (type == "alien_commander") return 4;
+    if (type == "arc_core") return 5;
+    return 0;
 }
 
 } // namespace tehi

@@ -39,4 +39,6 @@ private:
     EnemyClass pick_upgrade(uint32_t level, EnemyClass base) const;
 };
 
+LevelModifierSystem& get_level_modifier_system();
+
 } // namespace tehi

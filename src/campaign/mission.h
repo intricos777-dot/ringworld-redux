@@ -41,15 +41,23 @@ struct Waypoint {
     float radius = 0.0f;
 };
 
+class AchievementSystem;
+class GameModeSystem;
+class World;
+
 class Mission {
 public:
     Mission() = default;
     ~Mission() = default;
     bool initialize(const std::string& path);
     bool update(float dt, const float* player_position);
+    void spawn(World* world);
     void save_checkpoint();
     bool load_checkpoint();
     void complete_objective(uint32_t id);
+    void complete_mission();
+    void spawn_enemies();
+    void spawn_hidden_enemies();
     void trigger_dialogue(const std::string& trigger);
     const std::vector<MissionObjective>& get_objectives() const { return m_objectives; }
     const std::vector<DialogueLine>& get_dialogue() const { return m_dialogue; }
@@ -57,10 +65,12 @@ public:
     const std::vector<HiddenSpawn>& get_hidden_spawns() const { return m_hidden_spawns; }
     const std::vector<Waypoint>& get_waypoints() const { return m_waypoints; }
     bool is_finale() const { return m_finale; }
+    bool completed() const { return m_mission_completed; }
     std::string id() const { return m_id; }
     std::string name() const { return m_name; }
     std::string description() const { return m_description; }
     std::string map() const { return m_map; }
+    uint32_t enemy_type_to_uint(const std::string& type) const;
 private:
     std::string m_id;
     std::string m_name;
@@ -76,6 +86,8 @@ private:
     bool m_finale = false;
     uint32_t m_last_printed_objective_id = 0;
     bool m_on_spawn_printed = false;
+    bool m_started = false;
+    bool m_mission_completed = false;
 };
 
 } // namespace tehi
