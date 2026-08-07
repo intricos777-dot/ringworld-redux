@@ -14,7 +14,7 @@ class World;
 class MainMenu;
 class AISquad;
 class Inventory;
-class SDLGLBackend;
+class TERendererBackend;
 class AudioScript;
 class SaveSystem;
 class NetworkSystem;
@@ -59,7 +59,7 @@ private:
     std::unique_ptr<AISquad> m_alien_squad;
     std::unique_ptr<Inventory> m_human_inventory;
     std::unique_ptr<Inventory> m_alien_inventory;
-    std::unique_ptr<SDLGLBackend> m_renderer;
+    std::unique_ptr<TERendererBackend> m_renderer;
     std::unique_ptr<AudioScript> m_audio_script;
     std::unique_ptr<SaveSystem> m_save;
     std::unique_ptr<NetworkSystem> m_network;

@@ -5,8 +5,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(OpenGL REQUIRED)
 
-add_subdirectory(/home/sin/Projects/twilight-elysium ${CMAKE_BINARY_DIR}/twilight-elysium)
+add_subdirectory(external/twilight-elysium ${CMAKE_BINARY_DIR}/twilight-elysium)
 
 # Core game library
 add_library(tehi-core STATIC
@@ -20,11 +22,11 @@ add_library(tehi-core STATIC
     src/core/level_modifier.cpp
     src/core/save_system.cpp
     src/core/multiplayer/network.cpp
-    src/renderer/sdl_gl_backend.cpp
+    src/renderer/te_renderer_backend.cpp
     src/audio/audio_script.cpp
 )
 target_link_libraries(tehi-core PUBLIC te-engine te-renderer te-asset tehi-player tehi-ui tehi-multiplayer SDL2 GL)
-target_include_directories(tehi-core PUBLIC include src)
+target_include_directories(tehi-core PUBLIC include src ${CMAKE_SOURCE_DIR}/external/twilight-elysium/src)
 
 # Player controller
 add_library(tehi-player STATIC

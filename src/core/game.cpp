@@ -12,7 +12,7 @@
 #include "core/save_system.h"
 #include "core/multiplayer/network.h"
 #include "campaign/mission.h"
-#include "renderer/sdl_gl_backend.h"
+#include "renderer/te_renderer_backend.h"
 #include "campaign/campaign.h"
 #include "audio/audio_script.h"
 #include "multiplayer/coop.h"
@@ -39,8 +39,8 @@ bool Game::initialize() {
     m_hud->initialize();
     m_menu = std::make_unique<MainMenu>();
     m_menu->initialize();
-    m_renderer = std::make_unique<SDLGLBackend>();
-    if (!m_renderer->initialize(1280, 720, "Ringworld Redux")) {
+    m_renderer = std::make_unique<tehi::TERendererBackend>();
+    if (!m_renderer->initialize("Ringworld Redux", 1280, 720)) {
         std::fprintf(stderr, "Failed to init renderer\n");
         return false;
     }
@@ -139,7 +139,7 @@ void Game::run() {
         }
         bool close = false;
         if (m_renderer) {
-            m_renderer->poll_events(m_controller.get());
+            m_renderer->pump_events(m_controller.get());
             close = m_renderer->should_close();
         }
         if (close) { m_running = false; break; }
@@ -312,9 +312,6 @@ void Game::render_frame() const {
         draw_hud();
         m_renderer->end_frame();
         m_renderer->present();
-        if (m_renderer->poll_events(m_controller.get())) {
-            m_should_close = true;
-        }
     } else {
         draw_hud();
     }
